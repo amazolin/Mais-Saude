@@ -20,11 +20,11 @@
         <ImageView
             android:id="@+id/imageViewLogo"
             android:layout_width="264dp"
-            android:layout_height="150dp"
+            android:layout_height="238dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/logofrascow" />
+            app:srcCompat="@drawable/cadastrofeminino" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -44,10 +44,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_border"
-                    android:hint="Nome Completo"
+                    android:fontFamily="@font/aboreto"
+                    android:hint="Nome completo"
                     android:padding="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#666666" />
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF" />
 
                 <!-- Idade -->
                 <EditText
@@ -57,10 +58,11 @@
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_border"
                     android:hint="Idade"
+                    android:fontFamily="@font/aboreto"
                     android:inputType="number"
                     android:padding="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#666666" />
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF" />
 
                 <!-- Sexo -->
                 <RadioGroup
@@ -81,6 +83,7 @@
                         android:id="@+id/radioMasculino"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/aboreto"
                         android:text="Masculino"
                         android:textColor="#000000" />
 
@@ -89,6 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
+                        android:fontFamily="@font/aboreto"
                         android:text="Feminino"
                         android:textColor="#000000" />
                 </RadioGroup>
@@ -100,11 +104,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_border"
+                    android:fontFamily="@font/aboreto"
                     android:hint="Peso (kg)"
                     android:inputType="numberDecimal"
                     android:padding="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#666666" />
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF" />
 
                 <!-- Altura -->
                 <EditText
@@ -113,11 +118,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_border"
+                    android:fontFamily="@font/aboreto"
                     android:hint="Altura (cm)"
                     android:inputType="numberDecimal"
                     android:padding="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#666666" />
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF" />
 
                 <!-- Tipo Sanguíneo -->
                 <Spinner
@@ -126,9 +132,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_border"
+                    android:entries="@array/blood_types"
+                    android:fontFamily="@font/aboreto"
                     android:padding="12dp"
                     android:spinnerMode="dropdown"
-                    android:entries="@array/blood_types" />
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF" />
 
                 <!-- Email -->
                 <EditText
@@ -137,11 +146,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_border"
+                    android:fontFamily="@font/aboreto"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
                     android:padding="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#666666" />
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF" />
 
                 <!-- Senha -->
                 <EditText
@@ -150,11 +160,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_border"
+                    android:fontFamily="@font/aboreto"
                     android:hint="Senha"
                     android:inputType="textPassword"
                     android:padding="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#666666" />
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF" />
 
                 <!-- Confirmar Senha -->
                 <EditText
@@ -163,11 +174,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_border"
+                    android:fontFamily="@font/aboreto"
                     android:hint="Confirmar Senha"
                     android:inputType="textPassword"
                     android:padding="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#666666" />
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#FFFFFF" />
             </LinearLayout>
         </ScrollView>
 
@@ -179,7 +191,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:backgroundTint="#009688"
+            android:fontFamily="@font/aboreto"
             android:text="Cadastrar"
+            android:textColor="#B9F6CA"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnVoltarCadastro"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#009688"
+            android:fontFamily="@font/aboreto"
+            android:text="Voltar"
             android:textColor="#B9F6CA"
             android:textSize="16sp"
             android:textStyle="bold" />
