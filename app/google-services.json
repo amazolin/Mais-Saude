@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "624807660377",
+    "project_id": "mais-saude-21343",
+    "storage_bucket": "mais-saude-21343.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624807660377:android:a7de5c0abbdccb349e5a48",
+        "android_client_info": {
+          "package_name": "com.example.maissade"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7GyCiz9nWVsTHPW0fLuryGnaoSXD4GXQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

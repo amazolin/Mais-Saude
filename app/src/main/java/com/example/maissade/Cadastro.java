@@ -22,26 +22,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import com.example.model.Usuario;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Cadastro extends AppCompatActivity {
 
     private ViewFlipper viewFlipper;
-    private EditText txtNome;
-    private EditText txtIdade;
-    private EditText txtPeso;
-    private EditText txtAltura;
-    private EditText txtEmail;
-    private EditText txtSenha;
-    private EditText txtConfirmarSenha;
+    private EditText txtNome, txtIdade, txtPeso, txtAltura, txtEmail, txtSenha, txtConfirmarSenha;
     private RadioGroup radioGroupSexo;
-
-    private RadioButton radioMasculino;
-    private RadioButton radioFeminino;
-
-    private Button btnPrev;
-    private Button btnNext;
-    private Button btnCadastrar;
-    private Button btnVoltarCadastro;
+    private RadioButton radioMasculino, radioFeminino;
+    private Button btnPrev, btnNext, btnCadastrar, btnVoltarCadastro;
     private Spinner spinnerTipoSanguineo;
 
     private int[] avatarIds = {
@@ -103,6 +94,51 @@ public class Cadastro extends AppCompatActivity {
 
         viewFlipper = findViewById(R.id.viewFlipper);
         spinnerTipoSanguineo = findViewById(R.id.spinnerTipoSanguineo);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/");
+        DatabaseReference usuariosRef = database.getReference("usuarios");
+
+        btnCadastrar.setOnClickListener(view -> {
+            String nome = txtNome.getText().toString();
+            int idade = Integer.parseInt(txtIdade.getText().toString());
+
+            int selectedSexoId = radioGroupSexo.getCheckedRadioButtonId();
+            String sexo = selectedSexoId == R.id.radioMasculino ? "Masculino" : "Feminino";
+
+            // Suponha que img0, img1, img2... sejam imagens do ViewFlipper
+            int imagemIndex = viewFlipper.getDisplayedChild();
+            String imagemSelecionada = "img" + imagemIndex;
+
+            double peso = Double.parseDouble(txtPeso.getText().toString());
+            double altura = Double.parseDouble(txtAltura.getText().toString());
+
+            // Aqui está a correção!
+            String[] tiposSanguineos = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
+            String tipoSanguineo = tiposSanguineos[imagemIndex];  // ou use outro índice se o flipper for separado
+
+            String email = txtEmail.getText().toString();
+            String senha = txtSenha.getText().toString();
+            String confirmarSenha = txtConfirmarSenha.getText().toString();
+
+            if (!senha.equals(confirmarSenha)) {
+                Toast.makeText(this, "Senhas não coincidem", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Usuario usuario = new Usuario(nome, idade, sexo, imagemSelecionada, peso,
+                    altura, tipoSanguineo, email);
+
+            String id = usuariosRef.push().getKey();
+            usuariosRef.child(id).setValue(usuario)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, "Cadastro realizado com sucesso", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Erro ao salvar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+            Intent in = new Intent(Cadastro.this, MainActivity.class);
+            startActivity(in);
+        });
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
