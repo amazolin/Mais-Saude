@@ -38,6 +38,8 @@
                 android:orientation="vertical">
 
                 <!-- Nome -->
+
+                <!-- Idade -->
                 <EditText
                     android:id="@+id/txtNome"
                     android:layout_width="match_parent"
@@ -50,7 +52,6 @@
                     android:textColor="#FFFFFF"
                     android:textColorHint="#FFFFFF" />
 
-                <!-- Idade -->
                 <EditText
                     android:id="@+id/txtIdade"
                     android:layout_width="match_parent"
