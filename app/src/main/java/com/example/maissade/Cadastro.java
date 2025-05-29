@@ -28,14 +28,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Cadastro extends AppCompatActivity {
-
+    // <editor-fold desc="Variáveis">
     private ViewFlipper viewFlipper;
     private EditText txtNome, txtIdade, txtPeso, txtAltura, txtEmail, txtSenha, txtConfirmarSenha;
     private RadioGroup radioGroupSexo;
     private RadioButton radioMasculino, radioFeminino;
     private Button btnPrev, btnNext, btnCadastrar, btnVoltarCadastro;
     private Spinner spinnerTipoSanguineo;
-
+    // </editor-fold>
+    // <editor-fold desc="Avatar">
     private int[] avatarIds = {
             R.drawable.avatarone,
             R.drawable.avatartwo,
@@ -66,7 +67,7 @@ public class Cadastro extends AppCompatActivity {
             R.drawable.avatartwentynine
 
     };
-
+// </editor-fold>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class Cadastro extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cadastro);
 
-
+        // <editor-fold desc="find.by.view">
         viewFlipper = findViewById(R.id.viewFlipper);
         txtNome = findViewById(R.id.txtNome);
         txtIdade = findViewById(R.id.txtIdade);
@@ -95,7 +96,7 @@ public class Cadastro extends AppCompatActivity {
 
         viewFlipper = findViewById(R.id.viewFlipper);
         spinnerTipoSanguineo = findViewById(R.id.spinnerTipoSanguineo);
-
+        // </editor-fold>
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/");
         DatabaseReference usuariosRef = database.getReference("usuarios");
 
@@ -163,7 +164,7 @@ public class Cadastro extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        // <editor-fold desc="View Flipper">
         viewFlipper = findViewById(R.id.viewFlipper);
         Button btnPrev = findViewById(R.id.btnPrev);
         Button btnNext = findViewById(R.id.btnNext);
@@ -179,5 +180,6 @@ public class Cadastro extends AppCompatActivity {
 
         btnPrev.setOnClickListener(v -> viewFlipper.showPrevious());
         btnNext.setOnClickListener(v -> viewFlipper.showNext());
+        //</editor-fold>
     }
 }
