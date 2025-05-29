@@ -22,13 +22,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
-
+    // <editor-fold desc="Variavies">
     private Button btnCadastrar, btnLogin;
     private EditText txtUsername, txtPassword;
 
     private FirebaseAuth auth;
     private DatabaseReference usuariosRef;
-
+// </editor-fold>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +40,12 @@ public class Login extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        // <editor-fold desc="find.by.view">
         btnCadastrar = findViewById(R.id.btnCadastrar);
         btnLogin = findViewById(R.id.btnLogin);
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
-
+        // </editor-fold>
         auth = FirebaseAuth.getInstance();
         usuariosRef = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/")
                 .getReference("usuarios");
