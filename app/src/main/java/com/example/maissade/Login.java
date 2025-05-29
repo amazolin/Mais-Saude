@@ -76,7 +76,7 @@ public class Login extends AppCompatActivity {
                                     Toast.makeText(Login.this, "Bem-vindo, " + usuario.nome, Toast.LENGTH_SHORT).show();
 
                                     // Redireciona para a próxima tela
-                                    Intent intent = new Intent(Login.this, MainActivity.class); // Troque para sua activity principal
+                                    Intent intent = new Intent(Login.this, TelaUsuario.class); // Troque para sua activity principal
                                     startActivity(intent);
                                     finish();
                                 } else {

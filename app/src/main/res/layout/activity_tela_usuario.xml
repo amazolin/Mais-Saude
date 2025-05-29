@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TelaUsuario">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#D9EBDE"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Cabeçalho com avatar e nome -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:id="@+id/imgAvatarPerfil"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginRight="16dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/rounded_border"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cadastrofeminino" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtNomePerfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nome do Usuário"
+                    android:textColor="#000000"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/aboreto"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtIdadeSexoPerfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30 anos, Feminino"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/aboreto"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Seção de Informações Pessoais -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Informações Pessoais"
+                    android:textColor="#009688"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/aboreto"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded_border"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Peso:"
+                            android:textColor="#000000"
+                            android:fontFamily="@font/aboreto"/>
+
+                        <TextView
+                            android:id="@+id/txtPesoPerfil"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
+                            android:text="65 kg"
+                            android:textAlignment="textEnd"
+                            android:textColor="#F6F6F6" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Altura:"
+                            android:textColor="#000000"
+                            android:fontFamily="@font/aboreto"/>
+
+                        <TextView
+                            android:id="@+id/txtAlturaPerfil"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
+                            android:text="170 cm"
+                            android:textAlignment="textEnd"
+                            android:textColor="#F6F6F6" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Tipo Sanguíneo:"
+                            android:textColor="#000000"
+                            android:fontFamily="@font/aboreto"/>
+
+                        <TextView
+                            android:id="@+id/txtTipoSanguineoPerfil"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
+                            android:text="O+"
+                            android:textAlignment="textEnd"
+                            android:textColor="#F1ECEC" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Seção de Estatísticas -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Estatísticas"
+                    android:textColor="#009688"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/aboreto"
+                    android:textStyle="bold"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/rounded_border"
+                        android:padding="12dp"
+                        android:layout_marginEnd="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="IMC"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:fontFamily="@font/aboreto"/>
+
+                        <TextView
+                            android:id="@+id/txtIMCPerfil"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="22.5"
+                            android:textAlignment="center"
+                            android:textColor="#009688"
+                            android:textSize="24sp"
+                            android:fontFamily="@font/aboreto"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/rounded_border"
+                        android:padding="12dp"
+                        android:layout_marginStart="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Nível"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:fontFamily="@font/aboreto"/>
+
+                        <TextView
+                            android:id="@+id/txtNivelPerfil"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Iniciante"
+                            android:textAlignment="center"
+                            android:textColor="#009688"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/aboreto"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Botão Sair -->
+        <Button
+            android:id="@+id/btnSair"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#E57373"
+            android:fontFamily="@font/aboreto"
+            android:onClick="sair"
+            android:text="Sair"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
