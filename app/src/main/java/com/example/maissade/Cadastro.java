@@ -23,6 +23,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.example.model.Usuario;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -99,47 +100,63 @@ public class Cadastro extends AppCompatActivity {
         DatabaseReference usuariosRef = database.getReference("usuarios");
 
         btnCadastrar.setOnClickListener(view -> {
-            String nome = txtNome.getText().toString();
-            int idade = Integer.parseInt(txtIdade.getText().toString());
-
-            int selectedSexoId = radioGroupSexo.getCheckedRadioButtonId();
-            String sexo = selectedSexoId == R.id.radioMasculino ? "Masculino" : "Feminino";
-
-            // Suponha que img0, img1, img2... sejam imagens do ViewFlipper
-            int imagemIndex = viewFlipper.getDisplayedChild();
-            String imagemSelecionada = "img" + imagemIndex;
-
-            double peso = Double.parseDouble(txtPeso.getText().toString());
-            double altura = Double.parseDouble(txtAltura.getText().toString());
-
-            // Aqui está a correção!
-            String[] tiposSanguineos = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
-            String tipoSanguineo = tiposSanguineos[imagemIndex];  // ou use outro índice se o flipper for separado
-
-            String email = txtEmail.getText().toString();
+            String nome = txtNome.getText().toString().trim();
+            String idadeStr = txtIdade.getText().toString().trim();
+            String pesoStr = txtPeso.getText().toString().trim();
+            String alturaStr = txtAltura.getText().toString().trim();
+            String email = txtEmail.getText().toString().trim();
             String senha = txtSenha.getText().toString();
             String confirmarSenha = txtConfirmarSenha.getText().toString();
+
+            if (nome.isEmpty() || idadeStr.isEmpty() || pesoStr.isEmpty() || alturaStr.isEmpty() || email.isEmpty() || senha.isEmpty() || confirmarSenha.isEmpty()) {
+                Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             if (!senha.equals(confirmarSenha)) {
                 Toast.makeText(this, "Senhas não coincidem", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            Usuario usuario = new Usuario(nome, idade, sexo, imagemSelecionada, peso,
-                    altura, tipoSanguineo, email);
+            int idade;
+            double peso, altura;
 
-            String id = usuariosRef.push().getKey();
-            usuariosRef.child(id).setValue(usuario)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(this, "Cadastro realizado com sucesso", Toast.LENGTH_SHORT).show();
+            try {
+                idade = Integer.parseInt(idadeStr);
+                peso = Double.parseDouble(pesoStr);
+                altura = Double.parseDouble(alturaStr);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Idade, peso e altura devem ser números válidos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int selectedSexoId = radioGroupSexo.getCheckedRadioButtonId();
+            String sexo = (selectedSexoId == R.id.radioMasculino) ? "Masculino" : "Feminino";
+
+            int imagemIndex = viewFlipper.getDisplayedChild();
+            String imagemSelecionada = "img" + imagemIndex;
+
+            String[] tiposSanguineos = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
+            String tipoSanguineo = tiposSanguineos[imagemIndex % tiposSanguineos.length];
+
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+
+            auth.createUserWithEmailAndPassword(email, senha)
+                    .addOnSuccessListener(authResult -> {
+                        String uid = authResult.getUser().getUid();
+
+                        Usuario usuario = new Usuario(nome, idade, sexo, imagemSelecionada, peso, altura, tipoSanguineo, email, senha);
+
+                        usuariosRef.child(uid).setValue(usuario)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(this, "Cadastro realizado com sucesso", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(Cadastro.this, Login.class));
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> Toast.makeText(this, "Erro ao salvar dados: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Erro ao salvar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-            Intent in = new Intent(Cadastro.this, MainActivity.class);
-            startActivity(in);
+                    .addOnFailureListener(e -> Toast.makeText(this, "Erro no cadastro: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         });
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
