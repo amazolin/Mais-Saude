@@ -1,5 +1,6 @@
 package com.example.maissade;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,7 +37,13 @@ public class Cadastro extends AppCompatActivity {
             R.drawable.avatartwentyone,
             R.drawable.avatartwentytwo,
             R.drawable.avatartwentythree,
-            R.drawable.avatartwentyfour
+            R.drawable.avatartwentyfour,
+            R.drawable.avatartwentyfive,
+            R.drawable.avatartwentysix,
+            R.drawable.avatartwentyseven,
+            R.drawable.avatartwentyeight,
+            R.drawable.avatartwentynine
+
     };
 
 
