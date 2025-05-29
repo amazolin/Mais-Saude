@@ -2,14 +2,18 @@ package com.example.maissade;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,28 +25,31 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class TelaUsuario extends AppCompatActivity {
-
+    // <editor-fold desc="Variaveis">
     private ImageView imgAvatarPerfil;
     private TextView txtNomePerfil, txtIdadeSexoPerfil, txtPesoPerfil, txtAlturaPerfil, txtTipoSanguineoPerfil, txtIMCPerfil, txtNivelPerfil;
     private Button btnSair;
     private FirebaseAuth auth;
     private DatabaseReference usuariosRef;
-
+    //</editor-fold>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_tela_usuario);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
 
         });
-
+        // <editor-fold desc="Ligação ao Firebase">
         auth = FirebaseAuth.getInstance();
         usuariosRef = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/").getReference("usuarios");
-
+        //</editor-fold>
+        // <editor-fold desc="find.by.view">
         imgAvatarPerfil = findViewById(R.id.imgAvatarPerfil);
         txtNomePerfil = findViewById(R.id.txtNomePerfil);
         txtIdadeSexoPerfil = findViewById(R.id.txtIdadeSexoPerfil);
@@ -52,11 +59,26 @@ public class TelaUsuario extends AppCompatActivity {
         txtIMCPerfil = findViewById(R.id.txtIMCPerfil);
         txtNivelPerfil = findViewById(R.id.txtNivelPerfil);
         btnSair = findViewById(R.id.btnSair);
-
+        //</editor-fold>
         carregarDadosUsuario();
         btnSair.setOnClickListener(v -> sair());
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_usuario, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.item_apagar_conta) {
+            confirmarExclusao();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     private void carregarDadosUsuario() {
         FirebaseUser user = auth.getCurrentUser();
@@ -128,5 +150,42 @@ public class TelaUsuario extends AppCompatActivity {
                 .setNegativeButton("Não", null)
                 .show();
     }
+    private void confirmarExclusao() {
+        new AlertDialog.Builder(this)
+                .setTitle("Apagar conta")
+                .setMessage("Tem certeza que deseja apagar sua conta? Essa ação é irreversível. Você ira perder " +
+                        "todos os seus itens e XP.")
+                .setPositiveButton("Sim", (dialog, which) -> apagarConta())
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+    private void apagarConta() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("usuarios");
+
+        if (user != null) {
+            String uid = user.getUid();
+
+            // Primeiro apaga do banco de dados
+            usuariosRef.child(uid).removeValue()
+                    .addOnSuccessListener(aVoid -> {
+                        // Agora apaga da autenticação
+                        user.delete()
+                                .addOnSuccessListener(aVoid1 -> {
+                                    Toast.makeText(this, "Conta excluída com sucesso", Toast.LENGTH_SHORT).show();
+                                    // Voltar à tela de login
+                                    startActivity(new Intent(this, Login.class));
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Erro ao excluir do auth: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Erro ao excluir dados: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        }
+    }
+
 }
 

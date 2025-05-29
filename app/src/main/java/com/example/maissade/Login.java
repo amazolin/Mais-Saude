@@ -46,10 +46,11 @@ public class Login extends AppCompatActivity {
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
         // </editor-fold>
+        // <editor-fold desc="Ligação ao Firebase">
         auth = FirebaseAuth.getInstance();
         usuariosRef = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/")
                 .getReference("usuarios");
-
+        //</editor-fold>
         btnCadastrar.setOnClickListener(v -> {
             Intent intent = new Intent(Login.this, Cadastro.class);
             startActivity(intent);

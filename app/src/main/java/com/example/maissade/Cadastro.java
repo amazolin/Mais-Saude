@@ -97,9 +97,10 @@ public class Cadastro extends AppCompatActivity {
         viewFlipper = findViewById(R.id.viewFlipper);
         spinnerTipoSanguineo = findViewById(R.id.spinnerTipoSanguineo);
         // </editor-fold>
+        // <editor-fold desc="Ligação ao Firebase">
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/");
         DatabaseReference usuariosRef = database.getReference("usuarios");
-
+        //</editor-fold>
         btnCadastrar.setOnClickListener(view -> {
             String nome = txtNome.getText().toString().trim();
             String idadeStr = txtIdade.getText().toString().trim();
