@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Mais Saúde</string>
+    <string name="default_web_client_id">SEU_CLIENT_ID</string>
 </resources>
