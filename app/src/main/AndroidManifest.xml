@@ -13,6 +13,18 @@
         android:theme="@style/Theme.MaisSaúde"
         tools:targetApi="31">
         <activity
+            android:name=".TelaRanking"
+            android:exported="false" />
+        <activity
+            android:name=".TelaExercicio"
+            android:exported="false" />
+        <activity
+            android:name=".TelaAgua"
+            android:exported="false" />
+        <activity
+            android:name=".TelaSono"
+            android:exported="false" />
+        <activity
             android:name=".TelaUsuario"
             android:exported="false" />
         <activity

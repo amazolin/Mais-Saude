@@ -21,6 +21,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.model.Usuario;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -77,11 +78,32 @@ public class TelaUsuario extends AppCompatActivity {
         txtTipoSanguineoPerfil = findViewById(R.id.txtTipoSanguineoPerfil);
         txtIMCPerfil = findViewById(R.id.txtIMCPerfil);
         txtNivelPerfil = findViewById(R.id.txtNivelPerfil);
-        btnSair = findViewById(R.id.btnSair);
         //</editor-fold>
         carregarDadosUsuario();
-        btnSair.setOnClickListener(v -> sair());
 
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.sono) {
+                startActivity(new Intent(this, TelaSono.class));
+                return true;
+            } else if (id == R.id.agua) {
+                startActivity(new Intent(this, TelaAgua.class));
+                return true;
+            } else if (id == R.id.exercicios) {
+                startActivity(new Intent(this, TelaExercicio.class));
+                return true;
+            } else if (id == R.id.ranking) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, TelaRanking.class));
+                finish();
+                return true;
+            }
+
+            return false;
+        });
 
     }
 
@@ -157,18 +179,6 @@ public class TelaUsuario extends AppCompatActivity {
         }
     }
 
-    private void sair() {
-        new AlertDialog.Builder(this)
-                .setTitle("Sair")
-                .setMessage("Deseja realmente sair?")
-                .setPositiveButton("Sim", (dialog, which) -> {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(TelaUsuario.this, Login.class));
-                    finishAffinity();
-                })
-                .setNegativeButton("Não", null)
-                .show();
-    }
     private void confirmarExclusao() {
         new AlertDialog.Builder(this)
                 .setTitle("Apagar conta")

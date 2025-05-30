@@ -119,6 +119,9 @@ public class Login extends AppCompatActivity {
                     });
         });
 
+    }}
+
+        /*
         // Configurar opções de login do Google
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id)) // Importante para Firebase Auth
@@ -239,3 +242,4 @@ public class Login extends AppCompatActivity {
         }
     }
 }
+*/
