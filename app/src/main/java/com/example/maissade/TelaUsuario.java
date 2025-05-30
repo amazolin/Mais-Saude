@@ -1,6 +1,7 @@
 package com.example.maissade;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -39,6 +41,23 @@ public class TelaUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_tela_usuario);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        TextView toolbarTitle = null;
+
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            if (toolbar.getChildAt(i) instanceof TextView) {
+                TextView tv = (TextView) toolbar.getChildAt(i);
+                if (tv.getText() != null && tv.getText().toString().equals("Perfil")) {
+                    toolbarTitle = tv;
+                    break;
+                }
+            }
+        }
+
+        if (toolbarTitle != null) {
+            Typeface minhaFonte = ResourcesCompat.getFont(this, R.font.aboreto); // substitua por sua fonte
+            toolbarTitle.setTypeface(minhaFonte);
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
