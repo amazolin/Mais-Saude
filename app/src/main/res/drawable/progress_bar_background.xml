@@ -1,0 +1,30 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Borda externa (contorno dourado) -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#B8860B" /> <!-- cor da borda dourada -->
+            <corners android:radius="30dp" />
+        </shape>
+    </item>
+
+    <!-- Fundo interno (base escura da barra) -->
+    <item android:left="2dp" android:right="2dp" android:top="2dp" android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#001F3F" /> <!-- fundo da barra -->
+            <corners android:radius="28dp" />
+        </shape>
+    </item>
+
+    <!-- Progresso -->
+    <item android:id="@android:id/progress" android:left="2dp" android:right="2dp" android:top="2dp" android:bottom="2dp">
+        <clip>
+            <shape android:shape="rectangle">
+                <solid android:color="#E2D829" /> <!-- cor do progresso -->
+                <corners android:radius="28dp" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>
+

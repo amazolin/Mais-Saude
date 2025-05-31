@@ -218,6 +218,7 @@
                             android:textSize="24sp"
                             android:fontFamily="@font/aboreto"
                             android:textStyle="bold"/>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -247,10 +248,64 @@
                             android:textSize="18sp"
                             android:fontFamily="@font/aboreto"
                             android:textStyle="bold"/>
+
+
                     </LinearLayout>
+
                 </LinearLayout>
+                <!-- Barra de Progresso Personalizada com Estrela -->
+                <LinearLayout
+                    android:layout_width="363dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginEnd="8dp">
+
+                        <!-- Estrela como imagem de fundo -->
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/estrela"
+                            android:scaleType="fitCenter" />
+
+                        <!-- Número do nível -->
+                        <TextView
+                            android:id="@+id/textNivel"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:shadowColor="#FFF"
+                            android:shadowDx="3"
+                            android:shadowDy="3"
+                            android:shadowRadius="1"
+                            android:text="1"
+                            android:textColor="#001F3F"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressBarMissao"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="298dp"
+                        android:layout_height="28dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:max="100"
+                        android:progress="20"
+                        android:progressDrawable="@drawable/progress_bar_background" />
+                </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
+
+
 
     </LinearLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
