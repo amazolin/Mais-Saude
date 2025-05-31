@@ -9,16 +9,13 @@ import android.widget.ViewFlipper;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-
-        import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -35,7 +32,11 @@ public class Cadastro extends AppCompatActivity {
     private RadioButton radioMasculino, radioFeminino;
     private Button btnPrev, btnNext, btnCadastrar, btnVoltarCadastro;
     private Spinner spinnerTipoSanguineo;
+
+    // Variável para controlar a música
+    private MediaPlayer mediaPlayer;
     // </editor-fold>
+
     // <editor-fold desc="Avatar">
     private int[] avatarIds = {
             R.drawable.avatarone,
@@ -65,9 +66,8 @@ public class Cadastro extends AppCompatActivity {
             R.drawable.avatartwentyseven,
             R.drawable.avatartwentyeight,
             R.drawable.avatartwentynine
-
     };
-// </editor-fold>
+    // </editor-fold>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,21 +86,22 @@ public class Cadastro extends AppCompatActivity {
         txtConfirmarSenha = findViewById(R.id.txtConfirmarSenha);
 
         radioGroupSexo = findViewById(R.id.radioGroupSexo);
-        radioFeminino =findViewById(R.id.radioFeminino);
+        radioFeminino = findViewById(R.id.radioFeminino);
         radioMasculino = findViewById(R.id.radioMasculino);
 
-        btnCadastrar =findViewById(R.id.btnCadastrar);
+        btnCadastrar = findViewById(R.id.btnCadastrar);
         btnNext = findViewById(R.id.btnNext);
-        btnPrev =findViewById(R.id.btnPrev);
-        btnVoltarCadastro= findViewById(R.id.btnVoltarCadastro);
+        btnPrev = findViewById(R.id.btnPrev);
+        btnVoltarCadastro = findViewById(R.id.btnVoltarCadastro);
 
         viewFlipper = findViewById(R.id.viewFlipper);
         spinnerTipoSanguineo = findViewById(R.id.spinnerTipoSanguineo);
-        // </editor-fold>
+
         // <editor-fold desc="Ligação ao Firebase">
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/");
         DatabaseReference usuariosRef = database.getReference("usuarios");
         //</editor-fold>
+
         btnCadastrar.setOnClickListener(view -> {
             String nome = txtNome.getText().toString().trim();
             String idadeStr = txtIdade.getText().toString().trim();
@@ -165,8 +166,8 @@ public class Cadastro extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         // <editor-fold desc="View Flipper">
-        viewFlipper = findViewById(R.id.viewFlipper);
         Button btnPrev = findViewById(R.id.btnPrev);
         Button btnNext = findViewById(R.id.btnNext);
 
@@ -181,6 +182,44 @@ public class Cadastro extends AppCompatActivity {
 
         btnPrev.setOnClickListener(v -> viewFlipper.showPrevious());
         btnNext.setOnClickListener(v -> viewFlipper.showNext());
-        //</editor-fold>
+
+        btnVoltarCadastro.setOnClickListener(v -> {
+            // Finaliza a Activity atual e volta para a tela de Login
+            finish(); // Isso vai fechar a tela de cadastro e retornar para a tela anterior (Login)
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Sempre inicia a música ao entrar na tela Cadastro
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.celtic);
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Aqui, se necessário, você pode parar a música quando o usuário sair da tela de Cadastro
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Garantir que, se o usuário sair da tela, os recursos sejam liberados
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }
