@@ -2,6 +2,7 @@ package com.example.maissade;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -17,64 +18,42 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.model.Usuario; // Seu modelo de usuário
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 public class Login extends AppCompatActivity {
-    // <editor-fold desc="Variáveis">
+
     private Button btnCadastrar, btnLogin;
     private EditText txtUsername, txtPassword;
-
     private FirebaseAuth auth;
     private DatabaseReference usuariosRef;
-    private static final int RC_SIGN_IN = 9001;
-    private GoogleSignInClient googleSignInClient;
     private ImageButton btnGoogleSignIn;
 
-    // </editor-fold>
-    @SuppressLint("MissingInflatedId")
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        // <editor-fold desc="Inicialização de Views">
+        // Inicializa componentes
         btnCadastrar = findViewById(R.id.btnCadastrar);
         btnLogin = findViewById(R.id.btnLogin);
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
-        btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn); // Certifique-se de inicializar este botão
-        // </editor-fold>
+        btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn);
 
-
-        // <editor-fold desc="Conexão com o Firebase">
         auth = FirebaseAuth.getInstance();
-        // Inicializa a referência para o nó 'usuarios' no Realtime Database
         usuariosRef = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/").getReference("usuarios");
-        //</editor-fold>
 
         btnCadastrar.setOnClickListener(v -> {
-            Intent intent = new Intent(Login.this, Cadastro.class);
-            startActivity(intent);
+            pararMusica(); // Parar música antes de ir para Cadastro
+            startActivity(new Intent(Login.this, Cadastro.class));
         });
 
         btnLogin.setOnClickListener(v -> {
@@ -97,14 +76,11 @@ public class Login extends AppCompatActivity {
                                     Usuario usuario = snapshot.getValue(Usuario.class);
                                     Toast.makeText(Login.this, "Bem-vindo, " + usuario.nome, Toast.LENGTH_SHORT).show();
 
-                                    // Redireciona para a próxima tela
-                                    Intent intent = new Intent(Login.this, TelaUsuario.class); // Troque para sua activity principal
-                                    startActivity(intent);
+                                    pararMusica(); // Parar música antes de ir para próxima tela
+                                    startActivity(new Intent(Login.this, TelaUsuario.class));
                                     finish();
                                 } else {
-                                    Toast.makeText(Login.this, "Usuário não encontrado no banco de dados", Toast.LENGTH_SHORT).show();
-                                    // Opcionalmente, você pode criar o usuário aqui se ele autenticou, mas não existe no RTDB.
-                                    // Este cenário é menos comum para e-mail/senha, mas é bom considerar para consistência.
+                                    Toast.makeText(Login.this, "Usuário não encontrado", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -114,12 +90,45 @@ public class Login extends AppCompatActivity {
                             }
                         });
                     })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(Login.this, "Erro de login: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+                    .addOnFailureListener(e -> Toast.makeText(Login.this, "Erro de login: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         });
+    }
 
-    }}
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Sempre reinicia a música ao voltar para a tela Login
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.fantasy);
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pararMusica(); // Para a música ao sair da tela Login
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pararMusica(); // Garante liberação dos recursos
+    }
+
+    private void pararMusica() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+}
+
 
         /*
         // Configurar opções de login do Google
