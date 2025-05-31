@@ -82,18 +82,35 @@
             android:text="Dica"
             android:textColor="#FFFFFF" />
 
-        <TextView
-            android:id="@+id/dica_text"
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/dica_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AA000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#CC000000"
-            android:text="💤 Dica de Sono:\nDurma pelo menos 8 horas por noite para recuperar sua vitalidade e mana para a próxima aventura. \nEvite telas antes de deixar. Deixe o ambiente bem escuro e silencioso para uma melhor noite de sono."
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
             android:gravity="center"
-            android:visibility="gone"
-            android:padding="24dp"/>
+            android:padding="32dp"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/dica_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_dica_box"
+                android:padding="24dp"
+                android:text="💤 Dica de Sono:\n\nDurma pelo menos 8 horas por noite para recuperar sua vitalidade e mana para a próxima aventura.\n\n📵 Evite telas antes de dormir.\n\n🌙 Deixe o ambiente bem escuro e silencioso."
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:fontFamily="@font/aboreto"
+                android:gravity="center"/>
+        </LinearLayout>
+    </FrameLayout>
 
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

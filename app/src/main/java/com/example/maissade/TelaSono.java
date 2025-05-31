@@ -3,6 +3,7 @@ package com.example.maissade;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -30,13 +31,12 @@ public class TelaSono extends AppCompatActivity {
             return insets;
         });
 
-        // ✅ Estes devem estar fora do listener!
+        // Inicialização dos componentes
         textview_hours = findViewById(R.id.textview_hours);
         buttonIncrease = findViewById(R.id.button_increase);
         buttonDecrease = findViewById(R.id.button_decrease);
 
-        // Inicializa o valor
-        updateTextView();
+        updateTextView(); // Valor inicial
 
         buttonIncrease.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,28 +55,27 @@ public class TelaSono extends AppCompatActivity {
                 }
             }
         });
-        TextView dicaText = findViewById(R.id.dica_text);
+
+        // 🔽 Novo trecho com FrameLayout para mostrar a dica
+        FrameLayout dicaOverlay = findViewById(R.id.dica_overlay);
         Button buttonDica = findViewById(R.id.button_dica);
 
         buttonDica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dicaText.setVisibility(View.VISIBLE);
+                dicaOverlay.setVisibility(View.VISIBLE);
             }
         });
 
-        dicaText.setOnClickListener(new View.OnClickListener() {
+        dicaOverlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dicaText.setVisibility(View.GONE);
+                dicaOverlay.setVisibility(View.GONE);
             }
         });
-
     }
 
     private void updateTextView() {
         textview_hours.setText(sleepHours + " h");
     }
-
-
 }
