@@ -45,7 +45,7 @@ public class TelaAgua extends AppCompatActivity {
         // 2. Inicialização das Views (conectando as variáveis Java aos IDs do XML)
         tvMeta = findViewById(R.id.tvMeta);
         tvQuantidadeIngerida = findViewById(R.id.tvQuantidadeIngerida);
-        progressBar = findViewById(R.id.progressBar);
+
         edtQuantiaAgua = findViewById(R.id.edtQuantiaAgua);
         btn100ml = findViewById(R.id.btn100ml);
         btn250ml = findViewById(R.id.btn250ml);
