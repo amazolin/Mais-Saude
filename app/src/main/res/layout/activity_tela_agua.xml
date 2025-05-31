@@ -22,25 +22,43 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/hidrate" /> <TextView
-        android:id="@+id/tvMeta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Meta de ingestão: 2000ml"
-        android:textSize="18sp"
-        android:textColor="#000000"
-        android:layout_gravity="center" />
+            app:srcCompat="@drawable/hidrate" />
+
+        <TextView
+            android:id="@+id/tvMeta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/aboreto"
+            android:text="Meta de ingestão: 2000ml"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvQuantidadeIngerida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0 ml"
-            android:textSize="24sp"
-            android:textColor="#000000"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/aboreto"
+            android:text="0 ml"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:max="2000"
+            android:progress="0"
+            android:progressTint="#153F76" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,45 +69,103 @@
 
             <Button
                 android:id="@+id/btn100ml"
-                android:layout_width="wrap_content"
+                android:layout_width="122dp"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp" android:text="Adicionar 100ml"
-                android:textSize="16sp"
+                android:layout_marginEnd="20dp"
                 android:backgroundTint="#153F76"
-                android:layout_marginEnd="10dp" />
+                android:fontFamily="@font/aboreto"
+                android:minHeight="48dp"
+                android:text="100ml"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn250ml"
-                android:layout_width="wrap_content"
+                android:layout_width="122dp"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:text="Adicionar 250ml"
+                android:layout_marginStart="30dp"
                 android:backgroundTint="#153F76"
-                android:textSize="16sp" />
+                android:fontFamily="@font/aboreto"
+                android:minHeight="48dp"
+                android:text="250ml"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <EditText
             android:id="@+id/edtQuantiaAgua"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="48dp" android:hint="Quantos ml você bebeu?"
-            android:inputType="number"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/aboreto"
+            android:hint="Quantos ml você bebeu?"
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:padding="10dp"
             android:textSize="18sp"
-            android:padding="10dp"/>
+            android:textColorHint="#888888"
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/btnAdicionar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#153F76"
+            android:fontFamily="@font/aboreto"
             android:minHeight="48dp"
             android:text="Adicionar"
-            android:layout_marginTop="10dp"
+            android:textColor="#FFFFFF"
             android:textSize="16sp"
-            android:backgroundTint="#153F76"
-            android:layout_gravity="center" />
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_dicaagua"
+            android:layout_width="99dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#009688"
+            android:fontFamily="@font/aboreto"
+            android:padding="12dp"
+            android:text="Dica"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/dica_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AA000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="32dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dica_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_dica_box"
+                android:padding="24dp"
+                android:text="💤 Dica de Hidratação:\n\nDe acordo com a Organização Mundial da Saúde, o cálculo de quanto de água devemos beber todos os dias é mais simples do que parece. São 35 ml diários para cada quilo que temos. Ou seja, uma pessoa de 60 kg deve fazer a conta 60 kg x 35 ml e descobrir que a recomendação é de 2,1 litros por dia."
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:fontFamily="@font/aboreto"
+                android:gravity="center"/>
+        </LinearLayout>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

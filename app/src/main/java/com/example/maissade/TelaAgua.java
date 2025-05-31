@@ -50,6 +50,8 @@ public class TelaAgua extends AppCompatActivity {
         btn100ml = findViewById(R.id.btn100ml);
         btn250ml = findViewById(R.id.btn250ml);
         btnAdicionar = findViewById(R.id.btnAdicionar);
+        progressBar = findViewById(R.id.progressBar); // Adicione esta linha
+
 
         // Define a meta no TextView
         tvMeta.setText("Meta de ingestão: " + metaAguaMl + "ml");
@@ -100,6 +102,26 @@ public class TelaAgua extends AppCompatActivity {
                 }
             }
         });
+        // Referência aos elementos da dica
+        Button btnDica = findViewById(R.id.button_dicaagua);
+        View dicaOverlay = findViewById(R.id.dica_overlay);
+
+// Clique no botão "Dica" para mostrar a dica
+        btnDica.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dicaOverlay.setVisibility(View.VISIBLE);
+            }
+        });
+
+// Clique fora para fechar a dica
+        dicaOverlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dicaOverlay.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     /**

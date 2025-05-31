@@ -58,7 +58,7 @@ public class TelaSono extends AppCompatActivity {
 
         // 🔽 Novo trecho com FrameLayout para mostrar a dica
         FrameLayout dicaOverlay = findViewById(R.id.dica_overlay);
-        Button buttonDica = findViewById(R.id.button_dica);
+        Button buttonDica = findViewById(R.id.button_dicasono);
 
         buttonDica.setOnClickListener(new View.OnClickListener() {
             @Override

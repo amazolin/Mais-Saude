@@ -71,12 +71,24 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/button_dica"
+            android:id="@+id/btnAdicionar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#153F76"
+            android:fontFamily="@font/aboreto"
+            android:minHeight="48dp"
+            android:text="Adicionar"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/button_dicasono"
             android:layout_width="99dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="70dp"
-            android:backgroundTint="#153F76"
+            android:layout_marginTop="80dp"
+            android:backgroundTint="#009688"
             android:fontFamily="@font/aboreto"
             android:padding="12dp"
             android:text="Dica"
