@@ -166,8 +166,38 @@ public class TelaUsuario extends AppCompatActivity {
                     Long idade = snapshot.child("idade").getValue(Long.class);
                     Long peso = snapshot.child("peso").getValue(Long.class);
                     Long altura = snapshot.child("altura").getValue(Long.class);
+                    String imagemSelecionada = snapshot.child("imagemPerfil").getValue(String.class);
 
-                    // Pega os dados do usuário e coloca na tela de usuário.
+                    // Array com todos os avatares da drawable
+                    int[] avatarIds = {
+                            R.drawable.avatarone, R.drawable.avatartwo, R.drawable.avatarthree,
+                            R.drawable.avatarfour, R.drawable.avatarfive, R.drawable.avatarsix,
+                            R.drawable.avatarseven, R.drawable.avatareight, R.drawable.avatarnine,
+                            R.drawable.avatarten, R.drawable.avatareleven, R.drawable.avatartwelve,
+                            R.drawable.avatartirteen, R.drawable.avatarfourteen, R.drawable.avatarfiftheen,
+                            R.drawable.avatarsixteen, R.drawable.avatarseventeen, R.drawable.avatareighteen,
+                            R.drawable.avatarnineteen, R.drawable.avatartwenty, R.drawable.avatartwentyone,
+                            R.drawable.avatartwentytwo, R.drawable.avatartwentythree, R.drawable.avatartwentyfour,
+                            R.drawable.avatartwentyfive, R.drawable.avatartwentysix, R.drawable.avatartwentyseven,
+                            R.drawable.avatartwentyeight, R.drawable.avatartwentynine
+                    };
+
+                    // Atualiza o avatar
+                    if (imagemSelecionada != null && imagemSelecionada.startsWith("img")) {
+                        try {
+                            int index = Integer.parseInt(imagemSelecionada.substring(3)); // Ex: "img12" -> 12
+                            if (index >= 0 && index < avatarIds.length) {
+                                imgAvatarPerfil.setImageResource(avatarIds[index]);
+                            } else {
+                                // Se o índice estiver fora do intervalo
+                                imgAvatarPerfil.setImageResource(R.drawable.avatarone); // ou qualquer imagem padrão
+                            }
+                        } catch (NumberFormatException e) {
+                            imgAvatarPerfil.setImageResource(R.drawable.avatarone); // erro ao converter
+                        }
+                    }
+
+                    // Atualiza os textos
                     txtNomePerfil.setText(nome != null ? nome : "Nome não encontrado");
                     txtPesoPerfil.setText(peso != null ? peso + " kg" : "0 kg");
                     txtAlturaPerfil.setText(altura != null ? altura + " cm" : "0 cm");
@@ -175,15 +205,12 @@ public class TelaUsuario extends AppCompatActivity {
                             (sexo != null ? ", " + sexo : ""));
                     txtTipoSanguineoPerfil.setText(tipoSanguineo != null ? tipoSanguineo : "Não informado");
 
-                    // Realiza o cálculo do IMC e por enquanto deixa o nível da pessoa como os níveis do IMC
+                    // Cálculo do IMC
                     if (peso != null && altura != null && altura > 0) {
                         double alturaMetros = altura / 100.0;
                         double imc = peso / (alturaMetros * alturaMetros);
-
-                        // IMC com 2 casas decimais
                         txtIMCPerfil.setText(String.format("%.2f", imc));
 
-                        // Determina o nível de acordo com IMC
                         String nivel;
                         if (imc < 18.5) {
                             nivel = "Abaixo do peso";
@@ -207,6 +234,8 @@ public class TelaUsuario extends AppCompatActivity {
             Toast.makeText(TelaUsuario.this, "Usuário não autenticado", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     private void confirmarExclusao() {
         new AlertDialog.Builder(this)
