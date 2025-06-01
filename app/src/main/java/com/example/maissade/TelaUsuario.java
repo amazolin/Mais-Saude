@@ -111,9 +111,13 @@ public class TelaUsuario extends AppCompatActivity {
         });
     }
 
+    private boolean isPlaying = true; // Assume que a música já está tocando
+    private Menu menu; // Referência ao menu
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_usuario, menu);
+        this.menu = menu; // Guarda o menu para atualizar o ícone depois
         return true;
     }
 
@@ -127,23 +131,48 @@ public class TelaUsuario extends AppCompatActivity {
         }
 
         if (id == R.id.item_mutar) {
-            pararMusica(); // Para a música quando o usuário clicar em "Mutar"
+            alternarMusica(); // A função já cuida de tocar/parar e atualizar o ícone
             return true;
         }
 
         if (id == R.id.item_sair) {
-            logout(); // Realiza o logout
+            logout();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void pararMusica() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop(); // Para a música
-            mediaPlayer.release(); // Libera os recursos do MediaPlayer
-            mediaPlayer = null; // Nula a referência ao MediaPlayer
+    private void alternarMusica() {
+        if (isPlaying) {
+            // Parar a música
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+            isPlaying = false;
+        } else {
+            // Tocar a música novamente
+            mediaPlayer = MediaPlayer.create(this, R.raw.fantasy); // Substitua pelo seu áudio
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+            isPlaying = true;
+        }
+
+        atualizarIconeSom(); // Atualiza o ícone após alterar isPlaying
+    }
+
+    private void atualizarIconeSom() {
+        if (menu != null) {
+            MenuItem itemSom = menu.findItem(R.id.item_mutar);
+            if (itemSom != null) {
+                if (isPlaying) {
+                    itemSom.setIcon(R.drawable.volume); // ícone de som ativo
+                } else {
+                    itemSom.setIcon(R.drawable.mudo); // ícone de som mutado
+                }
+            }
         }
     }
 

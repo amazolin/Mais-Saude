@@ -29,13 +29,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="24dp"
+            android:paddingTop="24dp">
 
 
             <ImageView
                 android:id="@+id/imgAvatarPerfil"
                 android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_height="140dp"
                 android:layout_marginRight="16dp"
                 android:adjustViewBounds="true"
                 android:background="@android:color/transparent"
@@ -108,9 +109,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
                             android:text="Peso:"
                             android:textColor="#FFFFFF"
-                            android:fontFamily="@font/aboreto"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtPesoPerfil"
@@ -120,7 +122,8 @@
                             android:fontFamily="@font/aboreto"
                             android:text="65 kg"
                             android:textAlignment="textEnd"
-                            android:textColor="#F6F6F6" />
+                            android:textColor="#F6F6F6"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -133,9 +136,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
                             android:text="Altura:"
                             android:textColor="#FFFFFF"
-                            android:fontFamily="@font/aboreto"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtAlturaPerfil"
@@ -145,7 +149,8 @@
                             android:fontFamily="@font/aboreto"
                             android:text="170 cm"
                             android:textAlignment="textEnd"
-                            android:textColor="#F6F6F6" />
+                            android:textColor="#F6F6F6"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -157,9 +162,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
                             android:text="Tipo Sanguíneo:"
                             android:textColor="#FFFFFF"
-                            android:fontFamily="@font/aboreto"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtTipoSanguineoPerfil"
@@ -169,7 +175,8 @@
                             android:fontFamily="@font/aboreto"
                             android:text="O+"
                             android:textAlignment="textEnd"
-                            android:textColor="#F1ECEC" />
+                            android:textColor="#F1ECEC"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -203,10 +210,11 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/aboreto"
                             android:text="IMC"
                             android:textAlignment="center"
-                            android:textColor="#000000"
-                            android:fontFamily="@font/aboreto"/>
+                            android:textColor="#FAFAFA"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtIMCPerfil"
@@ -233,10 +241,11 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/aboreto"
                             android:text="Nível"
                             android:textAlignment="center"
-                            android:textColor="#000000"
-                            android:fontFamily="@font/aboreto"/>
+                            android:textColor="#FDFDFD"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtNivelPerfil"
