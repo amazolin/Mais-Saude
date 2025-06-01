@@ -330,4 +330,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/sobre_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AA000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="32dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sobre_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_dica_box"
+                android:padding="24dp"
+                android:text="ℹ️ Sobre o App\n\nA Agenda 2030 da ONU propõe 17 Objetivos de Desenvolvimento Sustentável para transformar o mundo.\n\nO Objetivo 3 visa assegurar uma vida saudável e promover o bem-estar para todas as pessoas, em todas as idades.\n\nFoi com essa missão que criamos o &#39;Mais Saúde&#39; — um aplicativo para incentivar hábitos saudáveis de forma leve, divertida e acessível a todos."
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:fontFamily="@font/aboreto"
+                android:gravity="center" />
+        </LinearLayout>
+    </FrameLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

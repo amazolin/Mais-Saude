@@ -6,6 +6,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,6 +127,11 @@ public class TelaUsuario extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
+        if(id == R.id.item_sobre) {
+            mostrarSobre();
+            return true;
+        }
+
         if (id == R.id.item_apagar_conta) {
             confirmarExclusao();
             return true;
@@ -175,6 +182,13 @@ public class TelaUsuario extends AppCompatActivity {
             }
         }
     }
+
+    private void mostrarSobre() {
+        FrameLayout sobreOverlay = findViewById(R.id.sobre_overlay);
+        sobreOverlay.setVisibility(View.VISIBLE);
+        sobreOverlay.setOnClickListener(v -> sobreOverlay.setVisibility(View.GONE));
+    }
+
 
     private void logout() {
         FirebaseAuth.getInstance().signOut(); // Faz logout do Firebase

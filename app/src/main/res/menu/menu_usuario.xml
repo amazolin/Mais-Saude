@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/item_sobre"
+        android:icon="@drawable/sair"
+        android:title="Sobre" />
+
+    <item
         android:id="@+id/item_apagar_conta"
         android:icon="@android:drawable/ic_menu_delete"
         android:title="Apagar Conta" />
