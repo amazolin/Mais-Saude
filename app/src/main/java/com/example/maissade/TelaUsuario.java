@@ -331,20 +331,21 @@ public class TelaUsuario extends AppCompatActivity {
 
         int defaultAvatar = R.drawable.avatarone;
 
-        if (imagemSelecionada != null && imagemSelecionada.startsWith("img")) {
+        if (imagemSelecionada != null && imagemSelecionada.startsWith("avatar_")) {
             try {
-                int index = Integer.parseInt(imagemSelecionada.substring(3));
+                int index = Integer.parseInt(imagemSelecionada.substring(7)); // pega o número depois de "avatar_"
                 if (index >= 0 && index < avatarIds.length) {
                     imgAvatarPerfil.setImageResource(avatarIds[index]);
                 } else {
+                    Log.w(TAG, "atualizarAvatar: índice fora do intervalo. Usando padrão.");
                     imgAvatarPerfil.setImageResource(defaultAvatar);
                 }
             } catch (NumberFormatException e) {
-                Log.e(TAG, "atualizarAvatar: NumberFormatException para imagemSelecionada: " + imagemSelecionada, e);
+                Log.e(TAG, "atualizarAvatar: erro ao analisar índice de imagemSelecionada: " + imagemSelecionada, e);
                 imgAvatarPerfil.setImageResource(defaultAvatar);
             }
         } else {
-            Log.w(TAG, "atualizarAvatar: imagemSelecionada é null ou não começa com 'img'. Usando avatar padrão. Valor: " + imagemSelecionada);
+            Log.w(TAG, "atualizarAvatar: imagemSelecionada inválida: " + imagemSelecionada + ". Usando avatar padrão.");
             imgAvatarPerfil.setImageResource(defaultAvatar);
         }
     }

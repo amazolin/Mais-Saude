@@ -42,9 +42,7 @@ public class Cadastro extends AppCompatActivity {
     private Button btnPrev, btnNext, btnCadastrar, btnVoltarCadastro;
     private Spinner spinnerTipoSanguineo;
     private MediaPlayer mediaPlayer;
-    // </editor-fold>
 
-    // <editor-fold desc="Avatar">
     private final int[] avatarIds = { // Adicionado 'final' pois não muda
             R.drawable.avatarone, R.drawable.avatartwo, R.drawable.avatarthree,
             R.drawable.avatarfour, R.drawable.avatarfive, R.drawable.avatarsix,
@@ -57,7 +55,6 @@ public class Cadastro extends AppCompatActivity {
             R.drawable.avatartwentyfive, R.drawable.avatartwentysix, R.drawable.avatartwentyseven,
             R.drawable.avatartwentyeight, R.drawable.avatartwentynine
     };
-    // </editor-fold>
 
     private DatabaseReference usuariosRef;
     private FirebaseAuth firebaseAuth;
@@ -83,13 +80,11 @@ public class Cadastro extends AppCompatActivity {
         btnPrev = findViewById(R.id.btnPrev);
         btnVoltarCadastro = findViewById(R.id.btnVoltarCadastro);
         spinnerTipoSanguineo = findViewById(R.id.spinnerTipoSanguineo);
-        // </editor-fold>
 
         // <editor-fold desc="Ligação ao Firebase">
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/"); // CONFIRME ESTA URL
         usuariosRef = database.getReference("usuarios");
         firebaseAuth = FirebaseAuth.getInstance();
-        //</editor-fold>
 
         btnCadastrar.setOnClickListener(view -> registrarUsuario());
 
@@ -109,8 +104,6 @@ public class Cadastro extends AppCompatActivity {
         }
         btnPrev.setOnClickListener(v -> viewFlipper.showPrevious());
         btnNext.setOnClickListener(v -> viewFlipper.showNext());
-        // </editor-fold>
-
         btnVoltarCadastro.setOnClickListener(v -> finish());
     }
 
@@ -176,9 +169,9 @@ public class Cadastro extends AppCompatActivity {
                 return;
             }
             altura = Double.parseDouble(alturaStr);
-            if (altura <= 0 || altura > 3.0) { // Validação básica de altura (em metros)
-                txtAltura.setError("Altura inválida (use metros, ex: 1.75)");
-                Toast.makeText(this, "Altura inválida (use metros, ex: 1.75)", Toast.LENGTH_SHORT).show();
+            if (altura <= 50 || altura > 300) { // Validação básica de altura em centímetros
+                txtAltura.setError("Altura inválida (em cm, ex: 175)");
+                Toast.makeText(this, "Altura inválida (em cm, ex: 175)", Toast.LENGTH_SHORT).show();
                 return;
             }
         } catch (NumberFormatException e) {
@@ -226,7 +219,9 @@ public class Cadastro extends AppCompatActivity {
                                 // ***** A MUDANÇA MAIS IMPORTANTE ESTÁ AQUI *****
                                 // Usa o construtor de Usuario que NÃO pede senha.
                                 // A classe Usuario já inicializa xp e ultimoRegistroSonoTimestamp com 0.
+
                                 Usuario usuario = new Usuario(nome, idade, sexo, imagemSelecionada, peso, altura, tipoSanguineo, email);
+
 
                                 usuariosRef.child(uid).setValue(usuario)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() { // Usar OnCompleteListener
