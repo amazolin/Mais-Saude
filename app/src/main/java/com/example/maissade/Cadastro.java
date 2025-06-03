@@ -43,13 +43,13 @@ public class Cadastro extends AppCompatActivity {
     private Spinner spinnerTipoSanguineo;
     private MediaPlayer mediaPlayer;
 
-    private final int[] avatarIds = { // Adicionado 'final' pois não muda
+    private final int[] avatarIds = {
             R.drawable.avatarone, R.drawable.avatartwo, R.drawable.avatarthree,
             R.drawable.avatarfour, R.drawable.avatarfive, R.drawable.avatarsix,
-            R.drawable.avatarsixteen, R.drawable.avatarseven, R.drawable.avatareight,
-            R.drawable.avatareighteen, R.drawable.avatarnine, R.drawable.avatarten,
-            R.drawable.avatareleven, R.drawable.avatartwelve, R.drawable.avatartirteen,
-            R.drawable.avatarfourteen, R.drawable.avatarfiftheen, R.drawable.avatarseventeen,
+            R.drawable.avatarseven, R.drawable.avatareight, R.drawable.avatarnine,
+            R.drawable.avatarten, R.drawable.avatareleven, R.drawable.avatartwelve,
+            R.drawable.avatartirteen, R.drawable.avatarfourteen, R.drawable.avatarfiftheen,
+            R.drawable.avatarsixteen, R.drawable.avatarseventeen, R.drawable.avatareighteen,
             R.drawable.avatarnineteen, R.drawable.avatartwenty, R.drawable.avatartwentyone,
             R.drawable.avatartwentytwo, R.drawable.avatartwentythree, R.drawable.avatartwentyfour,
             R.drawable.avatartwentyfive, R.drawable.avatartwentysix, R.drawable.avatartwentyseven,

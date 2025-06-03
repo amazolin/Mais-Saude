@@ -316,7 +316,7 @@ public class TelaUsuario extends AppCompatActivity {
             Log.w(TAG, "atualizarAvatar: imgAvatarPerfil é null.");
             return;
         }
-        int[] avatarIds = {
+        final int[] avatarIds = {
                 R.drawable.avatarone, R.drawable.avatartwo, R.drawable.avatarthree,
                 R.drawable.avatarfour, R.drawable.avatarfive, R.drawable.avatarsix,
                 R.drawable.avatarseven, R.drawable.avatareight, R.drawable.avatarnine,
@@ -328,6 +328,7 @@ public class TelaUsuario extends AppCompatActivity {
                 R.drawable.avatartwentyfive, R.drawable.avatartwentysix, R.drawable.avatartwentyseven,
                 R.drawable.avatartwentyeight, R.drawable.avatartwentynine
         };
+
 
         int defaultAvatar = R.drawable.avatarone;
 
