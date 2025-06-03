@@ -374,18 +374,26 @@ public class TelaUsuario extends AppCompatActivity {
 
     private void atualizarUiXpENivel(long totalXp) {
         Log.d(TAG, "atualizarUiXpENivel: totalXp = " + totalXp);
+
         if (textNivelEstrela == null || progressBarMissao == null) {
             Log.e(TAG, "atualizarUiXpENivel: textNivelEstrela ou progressBarMissao é NULL.");
             return;
         }
 
+        // Garante que o máximo da barra de progresso é 100
+        progressBarMissao.setMax(XP_POR_NIVEL);
+
+        // Cálculo do nível e do XP dentro do nível atual
         int nivelAtual = (int) (totalXp / XP_POR_NIVEL) + 1;
         int xpNoNivelAtual = (int) (totalXp % XP_POR_NIVEL);
 
+        // Atualiza UI
         textNivelEstrela.setText(String.valueOf(nivelAtual));
         progressBarMissao.setProgress(xpNoNivelAtual);
+
         Log.d(TAG, "atualizarUiXpENivel: UI de XP atualizada. Nível: " + nivelAtual + ", Progresso: " + xpNoNivelAtual);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

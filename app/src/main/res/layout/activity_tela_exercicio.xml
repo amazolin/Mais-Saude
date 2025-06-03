@@ -26,6 +26,182 @@
             android:scaleType="fitXY"
             app:srcCompat="@drawable/knightfight" />
 
+        <LinearLayout
+            android:id="@+id/exercicio_control_container"
+            android:layout_width="359dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/layoutexercicio"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/button_exercicio"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B2DFDB"
+                android:textColor="#153F76"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:icon="@drawable/exercicioicone" />
+
+            <TextView
+                android:id="@+id/exercicio_hours"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
+                android:text="0 m"
+                android:textColor="#E3F2FD"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_increase_exercicio"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B2DFDB"
+                android:text="+"
+                android:textColor="#153F76"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bike_control_container"
+            android:layout_width="359dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/layoutsono"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/button_sono"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B2DFDB"
+                android:textColor="#153F76"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:icon="@drawable/bicicleta" />
+
+            <TextView
+                android:id="@+id/bike_hours"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
+                android:text="0 m"
+                android:textColor="#E3F2FD"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_increase_sono"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B2DFDB"
+                android:text="+"
+                android:textColor="#153F76"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/corrida_control_container"
+            android:layout_width="359dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/layoutcorrida"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/button_corrida"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B2DFDB"
+                android:textColor="#153F76"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:icon="@drawable/corridaicon" />
+
+            <TextView
+                android:id="@+id/corrida_hours"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
+                android:text="0 m"
+                android:textColor="#E3F2FD"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_increase_corrida"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B2DFDB"
+                android:text="+"
+                android:textColor="#153F76"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/natacao_control_container"
+            android:layout_width="359dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/layoutnatacao"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/button_natacao"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B2DFDB"
+                android:textColor="#153F76"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:icon="@drawable/natacao" />
+
+            <TextView
+                android:id="@+id/natacao_hours"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
+                android:text="0 m"
+                android:textColor="#E3F2FD"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button_increase_natacao"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B2DFDB"
+                android:text="+"
+                android:textColor="#153F76"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
