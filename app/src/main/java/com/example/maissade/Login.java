@@ -129,7 +129,6 @@ public class Login extends AppCompatActivity {
     }
 }
 
-
         /*
         // Configurar opções de login do Google
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

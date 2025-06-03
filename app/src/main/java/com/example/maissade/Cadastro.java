@@ -203,7 +203,6 @@ public class Cadastro extends AppCompatActivity {
         // if(progressBar != null) progressBar.setVisibility(View.VISIBLE);
         // btnCadastrar.setEnabled(false); // Desabilita o botão durante o processo
 
-
         firebaseAuth.createUserWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -221,7 +220,6 @@ public class Cadastro extends AppCompatActivity {
                                 // A classe Usuario já inicializa xp e ultimoRegistroSonoTimestamp com 0.
 
                                 Usuario usuario = new Usuario(nome, idade, sexo, imagemSelecionada, peso, altura, tipoSanguineo, email);
-
 
                                 usuariosRef.child(uid).setValue(usuario)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() { // Usar OnCompleteListener
@@ -302,5 +300,4 @@ public class Cadastro extends AppCompatActivity {
             mediaPlayer = null;
         }
     }
-    // </editor-fold>
 }
