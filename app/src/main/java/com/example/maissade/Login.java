@@ -199,7 +199,7 @@ public class Login extends AppCompatActivity {
 
                     if (usuario != null) {
                         // Define o que significa "cadastro completo" verificando os campos essenciais.
-                        // Assume que valores padrão (0, "Não informado", etc.) indicam incompletude.
+                        // Assume que valores padrão (0, "Não informado", etc.) indicam que não estão completos.
                         isCadastroCompleto = (usuario.idade != 0 &&
                                 !usuario.sexo.equals("Não informado") &&
                                 usuario.peso != 0.0 &&
