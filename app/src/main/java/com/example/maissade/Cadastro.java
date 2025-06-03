@@ -3,29 +3,28 @@ package com.example.maissade;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.text.TextUtils; // Import para TextUtils
-import android.util.Patterns; // Import para Patterns (validação de email)
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-// import android.widget.RadioButton; // Removido se não estiver usando IDs individuais
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull; // Import para @NonNull
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.model.Usuario; // Certifique-se que esta é a classe Usuario correta
-import com.google.android.gms.tasks.OnCompleteListener; // Import para OnCompleteListener
-import com.google.android.gms.tasks.Task; // Import para Task
-import com.google.firebase.auth.AuthResult; // Import para AuthResult
+import com.example.model.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -35,17 +34,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Cadastro extends AppCompatActivity {
-    // <editor-fold desc="Variáveis">
     private ViewFlipper viewFlipper;
     private EditText txtNome, txtIdade, txtPeso, txtAltura, txtEmail, txtSenha, txtConfirmarSenha;
     private RadioGroup radioGroupSexo;
     private Button btnPrev, btnNext, btnCadastrar, btnVoltarCadastro;
     private Spinner spinnerTipoSanguineo;
     private MediaPlayer mediaPlayer;
-    // </editor-fold>
 
-    // <editor-fold desc="Avatar">
-    private final int[] avatarIds = { // Adicionado 'final' pois não muda
+    private final int[] avatarIds = {
             R.drawable.avatarone, R.drawable.avatartwo, R.drawable.avatarthree,
             R.drawable.avatarfour, R.drawable.avatarfive, R.drawable.avatarsix,
             R.drawable.avatarsixteen, R.drawable.avatarseven, R.drawable.avatareight,
@@ -57,7 +53,6 @@ public class Cadastro extends AppCompatActivity {
             R.drawable.avatartwentyfive, R.drawable.avatartwentysix, R.drawable.avatartwentyseven,
             R.drawable.avatartwentyeight, R.drawable.avatartwentynine
     };
-    // </editor-fold>
 
     private DatabaseReference usuariosRef;
     private FirebaseAuth firebaseAuth;
@@ -68,7 +63,7 @@ public class Cadastro extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cadastro);
 
-        // <editor-fold desc="find.by.view">
+        // findViewById
         viewFlipper = findViewById(R.id.viewFlipper);
         txtNome = findViewById(R.id.txtNome);
         txtIdade = findViewById(R.id.txtIdade);
@@ -83,13 +78,30 @@ public class Cadastro extends AppCompatActivity {
         btnPrev = findViewById(R.id.btnPrev);
         btnVoltarCadastro = findViewById(R.id.btnVoltarCadastro);
         spinnerTipoSanguineo = findViewById(R.id.spinnerTipoSanguineo);
-        // </editor-fold>
 
-        // <editor-fold desc="Ligação ao Firebase">
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/"); // CONFIRME ESTA URL
-        usuariosRef = database.getReference("usuarios");
+        // Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
-        //</editor-fold>
+
+        // Preencher nome e email automaticamente se usuário do Google estiver logado
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            String displayName = user.getDisplayName();
+            String email = user.getEmail();
+
+            if (displayName != null && !displayName.isEmpty()) {
+                txtNome = findViewById(R.id.txtNome);
+                txtNome.setText(displayName);
+            }
+
+            if (email != null && !email.isEmpty()) {
+                txtEmail = findViewById(R.id.txtEmail);
+                txtEmail.setText(email);
+            }
+        }
+
+        // Firebase DB
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/");
+        usuariosRef = database.getReference("usuarios");
 
         btnCadastrar.setOnClickListener(view -> registrarUsuario());
 
@@ -99,17 +111,16 @@ public class Cadastro extends AppCompatActivity {
             return insets;
         });
 
-        // <editor-fold desc="View Flipper">
         for (int avatarId : avatarIds) {
             ImageView imageView = new ImageView(this);
             imageView.setImageResource(avatarId);
             imageView.setAdjustViewBounds(true);
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER); // FIT_CENTER pode ser melhor para avatares
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             viewFlipper.addView(imageView);
         }
+
         btnPrev.setOnClickListener(v -> viewFlipper.showPrevious());
         btnNext.setOnClickListener(v -> viewFlipper.showNext());
-        // </editor-fold>
 
         btnVoltarCadastro.setOnClickListener(v -> finish());
     }
@@ -145,14 +156,13 @@ public class Cadastro extends AppCompatActivity {
         return true;
     }
 
-
     private void registrarUsuario() {
         String nome = txtNome.getText().toString().trim();
         String idadeStr = txtIdade.getText().toString().trim();
         String pesoStr = txtPeso.getText().toString().trim();
         String alturaStr = txtAltura.getText().toString().trim();
         String email = txtEmail.getText().toString().trim();
-        String senha = txtSenha.getText().toString(); // Usada apenas para o Auth
+        String senha = txtSenha.getText().toString();
         String confirmarSenha = txtConfirmarSenha.getText().toString();
 
         if (!validarCampos(nome, idadeStr, pesoStr, alturaStr, email, senha, confirmarSenha)) {
@@ -164,19 +174,19 @@ public class Cadastro extends AppCompatActivity {
 
         try {
             idade = Integer.parseInt(idadeStr);
-            if (idade <= 0 || idade > 120) { // Validação básica de idade
+            if (idade <= 0 || idade > 120) {
                 txtIdade.setError("Idade inválida");
                 Toast.makeText(this, "Idade inválida", Toast.LENGTH_SHORT).show();
                 return;
             }
             peso = Double.parseDouble(pesoStr);
-            if (peso <= 0 || peso > 500) { // Validação básica de peso
+            if (peso <= 0 || peso > 500) {
                 txtPeso.setError("Peso inválido");
                 Toast.makeText(this, "Peso inválido", Toast.LENGTH_SHORT).show();
                 return;
             }
             altura = Double.parseDouble(alturaStr);
-            if (altura <= 0 || altura > 3.0) { // Validação básica de altura (em metros)
+            if (altura <= 0 || altura > 3.0) {
                 txtAltura.setError("Altura inválida (use metros, ex: 1.75)");
                 Toast.makeText(this, "Altura inválida (use metros, ex: 1.75)", Toast.LENGTH_SHORT).show();
                 return;
@@ -194,65 +204,46 @@ public class Cadastro extends AppCompatActivity {
         String sexo = (selectedSexoId == R.id.radioMasculino) ? "Masculino" : "Feminino";
 
         int imagemIndex = viewFlipper.getDisplayedChild();
-        String imagemSelecionada = "avatar_" + imagemIndex; // Nome do recurso (ou identificador)
+        String imagemSelecionada = "avatar_" + imagemIndex;
 
         String tipoSanguineo;
-        if (spinnerTipoSanguineo.getSelectedItemPosition() == 0 && spinnerTipoSanguineo.getItemAtPosition(0).toString().toLowerCase().contains("selecione")) {
-            // Assume que o primeiro item é um placeholder como "Selecione..."
+        if (spinnerTipoSanguineo.getSelectedItemPosition() == 0 &&
+                spinnerTipoSanguineo.getItemAtPosition(0).toString().toLowerCase().contains("selecione")) {
             Toast.makeText(this, "Selecione o tipo sanguíneo", Toast.LENGTH_SHORT).show();
             return;
         }
         tipoSanguineo = spinnerTipoSanguineo.getSelectedItem().toString();
 
-
-        // Exibe um loading (opcional, mas recomendado para feedback ao usuário)
-        // ProgressBar progressBar = findViewById(R.id.cadastro_progress_bar); // Você precisaria adicionar isso ao seu XML
-        // if(progressBar != null) progressBar.setVisibility(View.VISIBLE);
-        // btnCadastrar.setEnabled(false); // Desabilita o botão durante o processo
-
-
         firebaseAuth.createUserWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        // if(progressBar != null) progressBar.setVisibility(View.GONE);
-                        // btnCadastrar.setEnabled(true);
-
                         if (task.isSuccessful()) {
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                             if (firebaseUser != null) {
                                 String uid = firebaseUser.getUid();
 
-                                // ***** A MUDANÇA MAIS IMPORTANTE ESTÁ AQUI *****
-                                // Usa o construtor de Usuario que NÃO pede senha.
-                                // A classe Usuario já inicializa xp e ultimoRegistroSonoTimestamp com 0.
                                 Usuario usuario = new Usuario(nome, idade, sexo, imagemSelecionada, peso, altura, tipoSanguineo, email);
 
                                 usuariosRef.child(uid).setValue(usuario)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() { // Usar OnCompleteListener
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> saveTask) {
                                                 if (saveTask.isSuccessful()) {
                                                     Toast.makeText(Cadastro.this, "Cadastro realizado com sucesso!", Toast.LENGTH_LONG).show();
-                                                    // firebaseUser.sendEmailVerification(); // Descomente para enviar email de verificação
                                                     Intent intent = new Intent(Cadastro.this, Login.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Limpa a pilha de atividades
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                     startActivity(intent);
-                                                    finish(); // Garante que esta activity seja finalizada
+                                                    finish();
                                                 } else {
                                                     Toast.makeText(Cadastro.this, "Erro ao salvar dados do perfil: " + saveTask.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                                    // Lógica de fallback: O usuário foi criado no Auth, mas não no DB.
-                                                    // Você pode tentar deletar o usuário do Auth: firebaseUser.delete();
-                                                    // Ou fornecer uma opção para o usuário tentar novamente.
                                                 }
                                             }
                                         });
                             } else {
-                                // Caso raro onde firebaseUser é null mesmo com task.isSuccessful()
                                 Toast.makeText(Cadastro.this, "Falha no cadastro. Tente novamente.", Toast.LENGTH_LONG).show();
                             }
                         } else {
-                            // Tratar falhas do createUserWithEmailAndPassword
                             try {
                                 throw task.getException();
                             } catch (FirebaseAuthWeakPasswordException e) {
@@ -275,13 +266,12 @@ public class Cadastro extends AppCompatActivity {
                 });
     }
 
-    // <editor-fold desc="Ciclo de Vida da Música">
     @Override
     protected void onResume() {
         super.onResume();
         if (mediaPlayer == null) {
             mediaPlayer = MediaPlayer.create(this, R.raw.celtic);
-            if (mediaPlayer != null) { // Verifica se a criação foi bem sucedida
+            if (mediaPlayer != null) {
                 mediaPlayer.setLooping(true);
             }
         }
@@ -307,5 +297,4 @@ public class Cadastro extends AppCompatActivity {
             mediaPlayer = null;
         }
     }
-    // </editor-fold>
 }

@@ -15,6 +15,17 @@ public class Usuario {
 
     public Usuario() {} // necessário para o Firebase
 
+    public Usuario(String nome, String email, String imagemPerfil) { // COnstrutor para login com os dados do Google
+        this.nome = nome;
+        this.email = email;
+        this.imagemPerfil = imagemPerfil;
+        this.idade = 0;
+        this.sexo = "Não informado"; // Valor padrão
+        this.peso = 0.0; // Valor padrão
+        this.altura = 0.0; // Valor padrão
+        this.tipoSanguineo = "Não informado"; // Valor padrão
+    }
+
     public Usuario(String nome, int idade, String sexo, String imagemPerfil, double peso, double altura, String tipoSanguineo, String email) {
         this.nome = nome;
         this.idade = idade;
