@@ -82,7 +82,7 @@ public class Cadastro extends AppCompatActivity {
         // Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // Preencher nome e email automaticamente se usuário do Google estiver logado
+        // Preencher nome e email automaticamente se usuário do Google estiver logado na conta
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
             String displayName = user.getDisplayName();
