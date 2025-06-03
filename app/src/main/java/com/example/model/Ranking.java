@@ -3,8 +3,7 @@ package com.example.model;
 public class Ranking {
     private String nome;
     private long xp;
-
-    public Ranking() {}
+    private int posicaoReal; // nova propriedade
 
     public Ranking(String nome, long xp) {
         this.nome = nome;
@@ -19,9 +18,13 @@ public class Ranking {
         return xp;
     }
 
-    @Override
-    public String toString() {
-        return nome + " - " + xp + " XP";
+    public int getPosicaoReal() {
+        return posicaoReal;
+    }
+
+    public void setPosicaoReal(int posicaoReal) {
+        this.posicaoReal = posicaoReal;
     }
 }
+
 

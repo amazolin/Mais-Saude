@@ -37,19 +37,21 @@ public class RankingAdapter extends ArrayAdapter<Ranking> {
         TextView nome = listItem.findViewById(R.id.nomeUsuario);
         TextView xp = listItem.findViewById(R.id.xpUsuario);
 
-        // 🥇 Emojis para top 3 ou números simples
-        switch (position) {
-            case 0:
+        // Usa a posição real para emoji ou número
+        int posReal = currentRanking.getPosicaoReal();
+
+        switch (posReal) {
+            case 1:
                 posicao.setText("🥇");
                 break;
-            case 1:
+            case 2:
                 posicao.setText("🥈");
                 break;
-            case 2:
+            case 3:
                 posicao.setText("🥉");
                 break;
             default:
-                posicao.setText(String.valueOf(position + 1));
+                posicao.setText(String.valueOf(posReal));
         }
 
         nome.setText(currentRanking.getNome());
