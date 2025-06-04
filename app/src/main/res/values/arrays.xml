@@ -11,4 +11,9 @@
         <item>O+</item>
         <item>O-</item>
     </string-array>
+    <string-array name="opcoes_sexo">
+        <item>Selecione o Sexo</item>
+        <item>Masculino</item>
+        <item>Feminino</item>
+    </string-array>
 </resources>

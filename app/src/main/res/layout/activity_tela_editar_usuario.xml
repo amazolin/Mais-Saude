@@ -25,7 +25,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" android:gravity="center_horizontal" android:layout_marginBottom="24dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
             android:paddingTop="24dp">
 
             <LinearLayout
@@ -33,19 +35,22 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginBottom="8dp"> <Button
-                android:id="@+id/btnPrevAvatar"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:text="◀"
-                android:backgroundTint="#8B4513"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:layout_marginEnd="4dp" />
+                android:layout_marginBottom="8dp">
+
+                <Button
+                    android:id="@+id/btnPrevAvatar"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:text="◀"
+                    android:backgroundTint="#8B4513"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:layout_marginEnd="4dp" />
 
                 <ViewFlipper
                     android:id="@+id/viewFlipperAvatars"
-                    android:layout_width="120dp" android:layout_height="140dp"
+                    android:layout_width="120dp"
+                    android:layout_height="140dp"
                     android:autoStart="false"
                     android:flipInterval="1000"
                     android:inAnimation="@android:anim/fade_in"
@@ -63,34 +68,81 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="center_horizontal"> <EditText
-                android:id="@+id/txtNomePerfil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/aboreto"
-                android:hint="NOME COMPLETO DO USUÁRIO"
-                android:inputType="textCapWords"
-                android:textColor="#101010"
-                android:textSize="20sp" android:textStyle="bold"
-                android:singleLine="true"
-                android:padding="8dp"
-                android:textColorHint="#808080"
-                android:background="#FFFFFF"
-                android:textAlignment="center" /> <EditText
-                android:id="@+id/txtIdadeSexoPerfil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/aboreto"
-                android:hint="IDADE, SEXO (EX: 30 ANOS, FEMININO)"
-                android:inputType="textMultiLine"
-                android:textColor="#000000"
-                android:textSize="14sp" android:lines="2"
-                android:gravity="top|center_horizontal" android:padding="8dp"
-                android:textColorHint="#808080"
-                android:background="#FFFFFF" />
+                android:gravity="center_horizontal">
+
+                <EditText
+                    android:id="@+id/txtNomePerfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/aboreto"
+                    android:hint="NOME COMPLETO DO USUÁRIO"
+                    android:inputType="textCapWords"
+                    android:textColor="#101010"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:padding="8dp"
+                    android:textColorHint="#808080"
+                    android:background="#FFFFFF"
+                    android:textAlignment="center" />
+
+                <EditText
+                    android:id="@+id/txtIdadePerfilUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="#FFFFFF"
+                    android:fontFamily="@font/aboreto"
+                    android:gravity="center"
+                    android:hint="IDADE (Ex.: 30)"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#808080"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sexo:"
+                    android:textColor="#101010"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="16dp"
+                    />
+
+                <RadioGroup
+                    android:id="@+id/radioGroupSexo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center">
+
+                    <RadioButton
+                        android:id="@+id/radioMasculino"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Masculino"
+                        android:textColor="#101010"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/aboreto"/>
+
+                    <RadioButton
+                        android:id="@+id/radioFeminino"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Feminino"
+                        android:textColor="#101010"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/aboreto"
+                        android:layout_marginStart="32dp"/>
+                </RadioGroup>
+
             </LinearLayout>
         </LinearLayout>
 
