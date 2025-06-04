@@ -19,6 +19,10 @@
         app:showAsAction="ifRoom|withText" />
 
     <item
+        android:id="@+id/item_editar"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Editar Perfil" />
+    <item
         android:id="@+id/item_sair"
         android:icon="@drawable/sair"
         android:title="Sair" />

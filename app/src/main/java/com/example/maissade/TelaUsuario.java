@@ -37,28 +37,57 @@ public class TelaUsuario extends AppCompatActivity {
 
     private static final String TAG = "TelaUsuario";
 
+    // Componentes da UI
     private ImageView imgAvatarPerfil;
     private TextView txtNomePerfil, txtIdadeSexoPerfil, txtPesoPerfil, txtAlturaPerfil, txtTipoSanguineoPerfil, txtIMCPerfil, txtNivelGeralStatus;
     private ProgressBar progressBarMissao;
     private TextView textNivelEstrela;
 
+    // Firebase
     private FirebaseAuth auth;
-    private FirebaseUser currentUser; // Pode ser atualizado, então não confie nele cegamente após onStart
+    private FirebaseUser currentUser;
     private DatabaseReference userNodeReference;
-    private ValueEventListener xpListener;
+    private ValueEventListener xpListener; // Listener para observação de dados do usuário
+
+    // Mídia
     private MediaPlayer mediaPlayer;
+    private boolean isPlaying = false; // Estado de reprodução da música
+    private Menu menu; // Para gerenciar o ícone de som na Toolbar
 
-    private boolean isPlaying = false;
-    private Menu menu; // Para o ícone de som
-
+    // Constantes
     private static final int XP_POR_NIVEL = 100;
+
+    // Variáveis de classe para armazenar os dados do usuário do Firebase
+    // Essas variáveis são essenciais para passar os dados para a TelaEditarUsuario
+    private String currentNome;
+    private Long currentIdade;
+    private Long currentPeso;
+    private Long currentAltura;
+    private String currentSexo;
+    private String currentTipoSanguineo; // Variável para armazenar o tipo sanguíneo
+    private String currentImagemSelecionada;
+
+    // Mapeamento de strings de avatar para recursos drawable (precisa ser o mesmo da TelaEditarUsuario)
+    private final int[] avatarResourceIds = {
+            R.drawable.avatarone, R.drawable.avatartwo, R.drawable.avatarthree,
+            R.drawable.avatarfour, R.drawable.avatarfive, R.drawable.avatarsix,
+            R.drawable.avatarseven, R.drawable.avatareight, R.drawable.avatarnine,
+            R.drawable.avatarten, R.drawable.avatareleven, R.drawable.avatartwelve,
+            R.drawable.avatartirteen,
+            R.drawable.avatarfourteen, R.drawable.avatarfiftheen,
+            R.drawable.avatarsixteen, R.drawable.avatarseventeen, R.drawable.avatareighteen,
+            R.drawable.avatarnineteen, R.drawable.avatartwenty, R.drawable.avatartwentyone,
+            R.drawable.avatartwentytwo, R.drawable.avatartwentythree, R.drawable.avatartwentyfour,
+            R.drawable.avatartwentyfive, R.drawable.avatartwentysix, R.drawable.avatartwentyseven,
+            R.drawable.avatartwentyeight, R.drawable.avatartwentynine
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_tela_usuario);
-        Log.d(TAG, "onCreate: Activity Criada");
+        Log.d(TAG, "onCreate: Activity TelaUsuario criada.");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,7 +100,6 @@ public class TelaUsuario extends AppCompatActivity {
         });
 
         auth = FirebaseAuth.getInstance();
-        // currentUser será verificado e configurado em onStart ou quando necessário
 
         inicializarViews();
         configurarBottomNavigation();
@@ -80,12 +108,14 @@ public class TelaUsuario extends AppCompatActivity {
         if (progressBarMissao != null) {
             progressBarMissao.setMax(XP_POR_NIVEL);
         } else {
-            Log.e(TAG, "onCreate: progressBarMissao é NULL após findViewById!");
+            Log.e(TAG, "onCreate: progressBarMissao é NULL após findViewById! Verifique o layout.");
         }
-        // Teste de UI de XP removido do onCreate para simplificar,
-        // será atualizado pelo listener real em onStart/onDataChange
     }
 
+    /**
+     * Personaliza o título da Toolbar aplicando uma fonte customizada.
+     * @param toolbar A Toolbar a ser personalizada.
+     */
     private void personalizarToolbarTitle(Toolbar toolbar) {
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             View child = toolbar.getChildAt(i);
@@ -102,6 +132,9 @@ public class TelaUsuario extends AppCompatActivity {
         }
     }
 
+    /**
+     * Inicializa todas as views da interface de usuário.
+     */
     private void inicializarViews() {
         Log.d(TAG, "inicializarViews: Iniciando views...");
         imgAvatarPerfil = findViewById(R.id.imgAvatarPerfil);
@@ -111,27 +144,32 @@ public class TelaUsuario extends AppCompatActivity {
         txtAlturaPerfil = findViewById(R.id.txtAlturaPerfil);
         txtTipoSanguineoPerfil = findViewById(R.id.txtTipoSanguineoPerfil);
         txtIMCPerfil = findViewById(R.id.txtIMCPerfil);
-        txtNivelGeralStatus = findViewById(R.id.txtNivelPerfil);
+        txtNivelGeralStatus = findViewById(R.id.txtNivelPerfil); // No XML está como txtNivelPerfil
         progressBarMissao = findViewById(R.id.progressBarMissao);
-        textNivelEstrela = findViewById(R.id.textNivel);
+        textNivelEstrela = findViewById(R.id.textNivel); // No XML está como textNivel
         Log.d(TAG, "inicializarViews: Views inicializadas.");
     }
 
+    /**
+     * Configura o MediaPlayer para reprodução de música de fundo.
+     */
     private void configurarMediaPlayer() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.fantasy);
+        mediaPlayer = MediaPlayer.create(this, R.raw.fantasy); // Assumindo R.raw.fantasy existe
         if (mediaPlayer != null) {
-            mediaPlayer.setLooping(true);
+            mediaPlayer.setLooping(true); // Faz a música tocar em loop
             Log.d(TAG, "configurarMediaPlayer: MediaPlayer configurado.");
         } else {
-            Log.e(TAG, "configurarMediaPlayer: Falha ao criar MediaPlayer.");
+            Log.e(TAG, "configurarMediaPlayer: Falha ao criar MediaPlayer. Verifique o recurso raw/fantasy.mp3.");
         }
     }
 
+    /**
+     * Configura o listener para a BottomNavigationView.
+     */
     private void configurarBottomNavigation() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            // Usando if-else if para melhor legibilidade e eficiência
             if (id == R.id.sono) {
                 startActivity(new Intent(this, TelaSono.class));
                 return true;
@@ -154,38 +192,39 @@ public class TelaUsuario extends AppCompatActivity {
         super.onStart();
         Log.d(TAG, "onStart: Activity iniciando.");
 
-        currentUser = auth.getCurrentUser(); // Atualiza o currentUser
+        currentUser = auth.getCurrentUser(); // Obtém o usuário Firebase atual
         if (currentUser == null) {
             Log.e(TAG, "onStart: Usuário não autenticado. Redirecionando para login.");
             Toast.makeText(this, "Sessão expirada. Por favor, faça login novamente.", Toast.LENGTH_LONG).show();
-            // Remove qualquer listener que possa ter sido anexado erroneamente
-            removeXpListener();
+            removeXpListener(); // Garante que o listener seja removido para evitar vazamentos
             startActivity(new Intent(this, Login.class));
             finish();
-            return; // Importante para não continuar a execução de onStart
+            return;
         }
 
-        // Configura a referência do nó do usuário APENAS se o usuário estiver autenticado
+        // Configura a referência ao nó do usuário no Firebase Realtime Database
         userNodeReference = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/")
                 .getReference("usuarios")
                 .child(currentUser.getUid());
         Log.d(TAG, "onStart: Referência do Firebase configurada para: " + userNodeReference.toString());
 
-        attachXpListener(); // Anexa o listener para dados do usuário
+        attachXpListener(); // Anexa o listener para observar as mudanças no XP e perfil do usuário
 
+        // Retoma a música se estava tocando
         if (isPlaying && mediaPlayer != null && !mediaPlayer.isPlaying()) {
             Log.d(TAG, "onStart: Retomando música.");
             mediaPlayer.start();
         }
-        atualizarIconeSom(); // Garante que o ícone esteja correto ao iniciar/retornar
+        atualizarIconeSom(); // Garante que o ícone de som esteja correto ao retornar
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: Activity parando.");
-        removeXpListener(); // Remove o listener
+        removeXpListener(); // Remove o listener quando a Activity não está visível para economizar recursos
 
+        // Pausa a música quando a Activity não está mais visível
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             Log.d(TAG, "onStop: Pausando música.");
             mediaPlayer.pause();
@@ -196,8 +235,7 @@ public class TelaUsuario extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: Activity destruída.");
-        // O listener já deve ter sido removido em onStop
-        // Libera o MediaPlayer
+        // Libera o MediaPlayer para evitar vazamentos de memória
         if (mediaPlayer != null) {
             Log.d(TAG, "onDestroy: Liberando MediaPlayer.");
             if (mediaPlayer.isPlaying()) {
@@ -208,18 +246,19 @@ public class TelaUsuario extends AppCompatActivity {
         }
     }
 
+    /**
+     * Anexa um ValueEventListener para observar mudanças nos dados do usuário no Firebase.
+     */
     private void attachXpListener() {
-        // Garante que userNodeReference não seja null
+        // Verifica se a referência do Firebase está inicializada
         if (userNodeReference == null) {
-            Log.e(TAG, "attachXpListener: userNodeReference é null. Não é possível anexar listener.");
-            // Tenta obter o usuário atual novamente, caso algo tenha mudado
-            currentUser = auth.getCurrentUser();
+            Log.e(TAG, "attachXpListener: userNodeReference é null. Tentando re-inicializar.");
+            currentUser = auth.getCurrentUser(); // Re-verifica o usuário
             if (currentUser != null) {
                 userNodeReference = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/")
                         .getReference("usuarios")
                         .child(currentUser.getUid());
             } else {
-                // Se ainda for nulo, redireciona para login, pois não há como prosseguir
                 Log.e(TAG, "attachXpListener: currentUser ainda é null após re-verificação. Redirecionando para login.");
                 Toast.makeText(this, "Erro de autenticação. Por favor, faça login novamente.", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this, Login.class));
@@ -228,13 +267,13 @@ public class TelaUsuario extends AppCompatActivity {
             }
         }
 
+        // Anexa o listener apenas se ele ainda não estiver anexado
         if (xpListener == null) {
             Log.d(TAG, "attachXpListener: Criando e anexando novo ValueEventListener para " + userNodeReference.toString());
             xpListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    // Verifica se o usuário ainda está logado ANTES de processar os dados
-                    // Isso é uma dupla checagem, útil se o listener demorar para ser removido em um logout rápido
+                    // Evita processar dados se o usuário deslogou enquanto o listener estava ativo
                     if (auth.getCurrentUser() == null) {
                         Log.w(TAG, "onDataChange: Recebeu dados, mas o usuário não está mais logado. Ignorando.");
                         return;
@@ -242,39 +281,38 @@ public class TelaUsuario extends AppCompatActivity {
 
                     Log.d(TAG, "onDataChange: Dados recebidos do Firebase. Snapshot: " + snapshot.toString());
                     if (snapshot.exists()) {
-                        Log.d(TAG, "onDataChange: Snapshot existe.");
-                        String nome = snapshot.child("nome").getValue(String.class);
-                        String sexo = snapshot.child("sexo").getValue(String.class);
-                        String tipoSanguineo = snapshot.child("tipoSanguineo").getValue(String.class);
-                        Long idadeLong = snapshot.child("idade").getValue(Long.class);
-                        Long pesoLong = snapshot.child("peso").getValue(Long.class);
-                        Long alturaLong = snapshot.child("altura").getValue(Long.class);
-                        String imagemSelecionada = snapshot.child("imagemPerfil").getValue(String.class);
+                        // Armazena os dados brutos nas variáveis de classe
+                        currentNome = snapshot.child("nome").getValue(String.class);
+                        currentSexo = snapshot.child("sexo").getValue(String.class);
+                        currentTipoSanguineo = snapshot.child("tipoSanguineo").getValue(String.class); // <-- Obtendo o tipo sanguíneo
+                        currentIdade = snapshot.child("idade").getValue(Long.class);
+                        currentPeso = snapshot.child("peso").getValue(Long.class);
+                        currentAltura = snapshot.child("altura").getValue(Long.class);
+                        currentImagemSelecionada = snapshot.child("imagemPerfil").getValue(String.class);
                         Long xpAtual = snapshot.child("xp").getValue(Long.class);
 
-                        Log.d(TAG, "onDataChange: Nome=" + nome + ", XP Atual=" + xpAtual);
+                        Log.d(TAG, "onDataChange: Nome=" + currentNome + ", XP Atual=" + xpAtual + ", Tipo Sanguíneo=" + currentTipoSanguineo);
 
-                        atualizarAvatar(imagemSelecionada);
-                        atualizarTextosPerfil(nome, sexo, tipoSanguineo, idadeLong, pesoLong, alturaLong);
-                        calcularEAtualizarIMC(pesoLong, alturaLong);
+                        // Atualiza a UI com os dados obtidos
+                        atualizarAvatar(currentImagemSelecionada);
+                        atualizarTextosPerfil(currentNome, currentSexo, currentTipoSanguineo, currentIdade, currentPeso, currentAltura);
+                        calcularEAtualizarIMC(currentPeso, currentAltura);
                         atualizarUiXpENivel(xpAtual != null ? xpAtual : 0L);
 
                     } else {
-                        // Verifica se currentUser não é nulo antes de usar o UID no log
                         String uid = (currentUser != null) ? currentUser.getUid() : "desconhecido (usuário pode ter deslogado)";
-                        Log.w(TAG, "onDataChange: Snapshot não existe para o usuário " + uid);
-                        Toast.makeText(TelaUsuario.this, "Perfil do usuário não encontrado.", Toast.LENGTH_SHORT).show();
-                        atualizarUiXpENivel(0L);
+                        Log.w(TAG, "onDataChange: Snapshot não existe para o usuário " + uid + ". Dados do perfil podem estar ausentes.");
+                        Toast.makeText(TelaUsuario.this, "Perfil do usuário não encontrado. Dados podem estar incompletos.", Toast.LENGTH_SHORT).show();
+                        atualizarUiXpENivel(0L); // Reseta a UI de XP
+                        // Considere limpar os campos de texto do perfil aqui ou preencher com "N/D"
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // Verifica se o usuário ainda está logado ANTES de mostrar o erro
-                    // Se o erro for por permissão devido a logout, esta mensagem pode ser mais informativa
+                    // Trata o erro de permissão que pode ocorrer se o usuário deslogar
                     if (auth.getCurrentUser() == null && error.getCode() == DatabaseError.PERMISSION_DENIED) {
                         Log.w(TAG, "onCancelled: Erro de permissão após logout. Mensagem: " + error.getMessage());
-                        // Não mostra Toast para o usuário neste caso, pois é esperado durante o logout.
                     } else {
                         Log.e(TAG, "onCancelled: Erro ao carregar dados do Firebase: " + error.getMessage(), error.toException());
                         Toast.makeText(TelaUsuario.this, "Erro ao carregar dados: " + error.getMessage(), Toast.LENGTH_LONG).show();
@@ -287,80 +325,85 @@ public class TelaUsuario extends AppCompatActivity {
         }
     }
 
+    /**
+     * Remove o ValueEventListener para evitar vazamentos de memória e leituras desnecessárias.
+     */
     private void removeXpListener() {
         if (xpListener != null && userNodeReference != null) {
             Log.d(TAG, "removeXpListener: Removendo xpListener de " + userNodeReference.toString());
             userNodeReference.removeEventListener(xpListener);
-            xpListener = null;
+            xpListener = null; // Limpa a referência para que possa ser recriada
         } else {
             Log.d(TAG, "removeXpListener: xpListener ou userNodeReference é null, nada a remover.");
         }
-        // Definir userNodeReference como null também pode ser útil para evitar usá-lo acidentalmente
-        // userNodeReference = null; // Opcional, mas pode ajudar a pegar erros mais cedo
     }
 
-
+    /**
+     * Atualiza os TextViews do perfil com os dados do usuário.
+     */
     private void atualizarTextosPerfil(String nome, String sexo, String tipoSanguineo, Long idade, Long peso, Long altura) {
-        if (txtNomePerfil != null) txtNomePerfil.setText(nome != null ? nome : "N/D");
+        if (txtNomePerfil != null) txtNomePerfil.setText(nome != null ? nome : "Nome N/D");
         if (txtPesoPerfil != null) txtPesoPerfil.setText(peso != null ? peso + " kg" : "0 kg");
         if (txtAlturaPerfil != null) txtAlturaPerfil.setText(altura != null ? altura + " cm" : "0 cm");
-        if (txtIdadeSexoPerfil != null) txtIdadeSexoPerfil.setText(
-                (idade != null ? idade + " anos" : "Idade N/D") + (sexo != null ? ", " + sexo : "")
-        );
+
+        // Combina idade e sexo para exibição
+        if (txtIdadeSexoPerfil != null) {
+            String idadeText = (idade != null && idade > 0) ? idade + " anos" : "Idade N/D";
+            String sexoText = (sexo != null && !sexo.isEmpty()) ? sexo : "";
+            if (!sexoText.isEmpty()) {
+                txtIdadeSexoPerfil.setText(idadeText + ", " + sexoText);
+            } else {
+                txtIdadeSexoPerfil.setText(idadeText);
+            }
+        }
+
         if (txtTipoSanguineoPerfil != null) txtTipoSanguineoPerfil.setText(tipoSanguineo != null ? tipoSanguineo : "N/D");
     }
 
-
+    /**
+     * Atualiza a ImageView do avatar com base na string do avatar selecionado.
+     * @param imagemSelecionada A string que representa o avatar (e.g., "avatar_0").
+     */
     private void atualizarAvatar(String imagemSelecionada) {
         if (imgAvatarPerfil == null) {
-            Log.w(TAG, "atualizarAvatar: imgAvatarPerfil é null.");
+            Log.w(TAG, "atualizarAvatar: imgAvatarPerfil é null. Não é possível atualizar.");
             return;
         }
-        final int[] avatarIds = {
-                R.drawable.avatarone, R.drawable.avatartwo, R.drawable.avatarthree,
-                R.drawable.avatarfour, R.drawable.avatarfive, R.drawable.avatarsix,
-                R.drawable.avatarseven, R.drawable.avatareight, R.drawable.avatarnine,
-                R.drawable.avatarten, R.drawable.avatareleven, R.drawable.avatartwelve,
-                R.drawable.avatartirteen, R.drawable.avatarfourteen, R.drawable.avatarfiftheen,
-                R.drawable.avatarsixteen, R.drawable.avatarseventeen, R.drawable.avatareighteen,
-                R.drawable.avatarnineteen, R.drawable.avatartwenty, R.drawable.avatartwentyone,
-                R.drawable.avatartwentytwo, R.drawable.avatartwentythree, R.drawable.avatartwentyfour,
-                R.drawable.avatartwentyfive, R.drawable.avatartwentysix, R.drawable.avatartwentyseven,
-                R.drawable.avatartwentyeight, R.drawable.avatartwentynine
-        };
 
-
-        int defaultAvatar = R.drawable.avatarone;
+        int defaultAvatar = R.drawable.avatarone; // Avatar padrão caso ocorra um erro
 
         if (imagemSelecionada != null && imagemSelecionada.startsWith("avatar_")) {
             try {
-                int index = Integer.parseInt(imagemSelecionada.substring(7)); // pega o número depois de "avatar_"
-                if (index >= 0 && index < avatarIds.length) {
-                    imgAvatarPerfil.setImageResource(avatarIds[index]);
+                int index = Integer.parseInt(imagemSelecionada.substring(7)); // Extrai o número do "avatar_X"
+                if (index >= 0 && index < avatarResourceIds.length) {
+                    imgAvatarPerfil.setImageResource(avatarResourceIds[index]);
                 } else {
-                    Log.w(TAG, "atualizarAvatar: índice fora do intervalo. Usando padrão.");
+                    Log.w(TAG, "atualizarAvatar: Índice de avatar fora do intervalo (" + index + "). Usando padrão.");
                     imgAvatarPerfil.setImageResource(defaultAvatar);
                 }
             } catch (NumberFormatException e) {
-                Log.e(TAG, "atualizarAvatar: erro ao analisar índice de imagemSelecionada: " + imagemSelecionada, e);
+                Log.e(TAG, "atualizarAvatar: Erro ao analisar índice de imagemSelecionada: " + imagemSelecionada, e);
                 imgAvatarPerfil.setImageResource(defaultAvatar);
             }
         } else {
-            Log.w(TAG, "atualizarAvatar: imagemSelecionada inválida: " + imagemSelecionada + ". Usando avatar padrão.");
+            Log.w(TAG, "atualizarAvatar: imagemSelecionada inválida ou nula: " + imagemSelecionada + ". Usando avatar padrão.");
             imgAvatarPerfil.setImageResource(defaultAvatar);
         }
     }
 
+    /**
+     * Calcula e atualiza o IMC e o status geral com base no peso e altura.
+     */
     private void calcularEAtualizarIMC(Long peso, Long altura) {
         if (txtIMCPerfil == null || txtNivelGeralStatus == null) {
-            Log.w(TAG, "calcularEAtualizarIMC: txtIMCPerfil ou txtNivelGeralStatus é null.");
+            Log.w(TAG, "calcularEAtualizarIMC: txtIMCPerfil ou txtNivelGeralStatus é null. Não é possível calcular.");
             return;
         }
 
         if (peso != null && altura != null && peso > 0 && altura > 0) {
-            double alturaMetros = altura / 100.0;
+            double alturaMetros = altura / 100.0; // Converte cm para metros
             double imc = peso / (alturaMetros * alturaMetros);
-            txtIMCPerfil.setText(String.format("%.2f", imc));
+            txtIMCPerfil.setText(String.format("%.2f", imc)); // Formata para 2 casas decimais
 
             String nivelStatus;
             if (imc < 18.5) nivelStatus = "Abaixo do peso";
@@ -369,39 +412,39 @@ public class TelaUsuario extends AppCompatActivity {
             else nivelStatus = "Obesidade";
             txtNivelGeralStatus.setText(nivelStatus);
         } else {
-            txtIMCPerfil.setText("--");
+            txtIMCPerfil.setText("--"); // Valores padrão se os dados forem inválidos/ausentes
             txtNivelGeralStatus.setText("Dados incompletos");
         }
     }
 
+    /**
+     * Atualiza a barra de progresso de XP e o nível do usuário.
+     * @param totalXp O total de pontos de experiência do usuário.
+     */
     private void atualizarUiXpENivel(long totalXp) {
         Log.d(TAG, "atualizarUiXpENivel: totalXp = " + totalXp);
 
         if (textNivelEstrela == null || progressBarMissao == null) {
-            Log.e(TAG, "atualizarUiXpENivel: textNivelEstrela ou progressBarMissao é NULL.");
+            Log.e(TAG, "atualizarUiXpENivel: textNivelEstrela ou progressBarMissao é NULL. Verifique o layout.");
             return;
         }
 
-        // Garante que o máximo da barra de progresso é 100
-        progressBarMissao.setMax(XP_POR_NIVEL);
+        progressBarMissao.setMax(XP_POR_NIVEL); // Define o máximo da barra para o XP necessário para o próximo nível
 
-        // Cálculo do nível e do XP dentro do nível atual
-        int nivelAtual = (int) (totalXp / XP_POR_NIVEL) + 1;
-        int xpNoNivelAtual = (int) (totalXp % XP_POR_NIVEL);
+        int nivelAtual = (int) (totalXp / XP_POR_NIVEL) + 1; // Calcula o nível atual
+        int xpNoNivelAtual = (int) (totalXp % XP_POR_NIVEL); // Calcula o XP dentro do nível atual
 
-        // Atualiza UI
         textNivelEstrela.setText(String.valueOf(nivelAtual));
         progressBarMissao.setProgress(xpNoNivelAtual);
 
         Log.d(TAG, "atualizarUiXpENivel: UI de XP atualizada. Nível: " + nivelAtual + ", Progresso: " + xpNoNivelAtual);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_usuario, menu);
-        this.menu = menu;
-        atualizarIconeSom();
+        this.menu = menu; // Armazena a referência do menu
+        atualizarIconeSom(); // Atualiza o ícone de som ao criar o menu
         return true;
     }
 
@@ -418,16 +461,38 @@ public class TelaUsuario extends AppCompatActivity {
             alternarMusica();
             return true;
         } else if (id == R.id.item_sair) {
-            fazerLogout(); // Renomeado para evitar conflito com o nome da classe Login
+            fazerLogout();
+            return true;
+        } else if (id == R.id.item_editar) {
+            // AQUI É ONDE TODOS OS DADOS SÃO PASSADOS PARA A TELA DE EDIÇÃO
+            Intent intent = new Intent(TelaUsuario.this, TelaEditarUsuario.class);
+
+            // Passa TODOS os dados do usuário usando as variáveis de classe
+            // É crucial que essas variáveis (currentNome, currentIdade, etc.)
+            // estejam preenchidas pelo ValueEventListener antes de chamar esta Intent.
+            // Para garantir que não enviamos `null`, usamos operadores ternários ou
+            // valores padrão (`0L` para Long) para tipos primitivos.
+            intent.putExtra("nome", currentNome);
+            intent.putExtra("idade", currentIdade != null ? currentIdade : 0L);
+            intent.putExtra("peso", currentPeso != null ? currentPeso : 0L);
+            intent.putExtra("altura", currentAltura != null ? currentAltura : 0L);
+            intent.putExtra("sexo", currentSexo);
+            intent.putExtra("tipoSanguineo", currentTipoSanguineo); // <-- ESTE É O CAMPO QUE FOI VERIFICADO!
+            intent.putExtra("imagemPerfil", currentImagemSelecionada);
+
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Alterna o estado de reprodução da música de fundo (tocar/pausar).
+     */
     private void alternarMusica() {
         if (mediaPlayer == null) {
-            Log.w(TAG, "alternarMusica: MediaPlayer é null, tentando recriar.");
-            configurarMediaPlayer();
+            Log.w(TAG, "alternarMusica: MediaPlayer é null. Tentando recriar.");
+            configurarMediaPlayer(); // Tenta recriar o MediaPlayer
             if (mediaPlayer == null) {
                 Toast.makeText(this, "Erro ao iniciar áudio.", Toast.LENGTH_SHORT).show();
                 return;
@@ -445,52 +510,58 @@ public class TelaUsuario extends AppCompatActivity {
             Log.d(TAG, "alternarMusica: Música iniciada.");
             isPlaying = true;
         }
-        atualizarIconeSom();
+        atualizarIconeSom(); // Atualiza o ícone de som na Toolbar
     }
 
+    /**
+     * Atualiza o ícone de som na Toolbar com base no estado de reprodução da música.
+     */
     private void atualizarIconeSom() {
         if (menu != null) {
             MenuItem itemSom = menu.findItem(R.id.item_mutar);
             if (itemSom != null) {
-                itemSom.setIcon(isPlaying ? R.drawable.volume : R.drawable.mudo);
+                itemSom.setIcon(isPlaying ? R.drawable.volume : R.drawable.mudo); // Assumindo drawables 'volume' e 'mudo'
             }
         }
     }
 
+    /**
+     * Mostra a tela de sobreposição "Sobre".
+     */
     private void mostrarSobre() {
         FrameLayout sobreOverlay = findViewById(R.id.sobre_overlay);
         if (sobreOverlay != null) {
             sobreOverlay.setVisibility(View.VISIBLE);
+            // Define um clique para fechar a sobreposição ao tocar fora
             sobreOverlay.setOnClickListener(v -> sobreOverlay.setVisibility(View.GONE));
+        } else {
+            Log.e(TAG, "mostrarSobre: sobre_overlay é NULL. Verifique o layout.");
         }
     }
 
-    // Renomeado para fazerLogout para clareza
+    /**
+     * Realiza o logout do usuário e redireciona para a tela de Login.
+     */
     private void fazerLogout() {
         Log.d(TAG, "fazerLogout: Iniciando processo de logout...");
-
-        // 1. Remover o listener ANTES de deslogar
-        removeXpListener();
-
-        // 2. Parar a música
+        removeXpListener(); // Remove o listener antes de deslogar
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             Log.d(TAG, "fazerLogout: Parando música.");
             mediaPlayer.stop();
-            // Considerar mediaPlayer.release() aqui também se não for mais usar nesta sessão da activity
         }
-
-        // 3. Deslogar o usuário
         Log.d(TAG, "fazerLogout: Chamando auth.signOut().");
-        auth.signOut();
-
-        // 4. Navegar para a tela de Login e finalizar esta activity
+        auth.signOut(); // Desloga do Firebase Auth
         Log.d(TAG, "fazerLogout: Navegando para LoginActivity e finalizando TelaUsuario.");
         Intent intent = new Intent(this, Login.class);
+        // Limpa a pilha de atividades para que o usuário não possa voltar para TelaUsuario
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish();
+        finish(); // Finaliza a atividade atual
     }
 
+    /**
+     * Exibe um diálogo de confirmação antes de apagar a conta.
+     */
     private void confirmarExclusao() {
         new AlertDialog.Builder(this)
                 .setTitle("Apagar conta")
@@ -500,28 +571,28 @@ public class TelaUsuario extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Apaga a conta do usuário do Firebase Authentication e do Realtime Database.
+     */
     private void apagarConta() {
         Log.d(TAG, "apagarConta: Iniciando processo de exclusão da conta.");
-        FirebaseUser userParaApagar = auth.getCurrentUser(); // Pega o usuário atual ANTES de remover listener e deslogar
+        FirebaseUser userParaApagar = auth.getCurrentUser();
 
         if (userParaApagar == null) {
             Log.w(TAG, "apagarConta: Nenhum usuário logado para apagar. Redirecionando para Login.");
             Toast.makeText(this, "Nenhum usuário logado para apagar.", Toast.LENGTH_SHORT).show();
-            fazerLogout(); // Usa o método de logout para uma saída limpa
+            fazerLogout(); // Se não há usuário, apenas desloga
             return;
         }
 
-        String uid = userParaApagar.getUid();
+        final String uid = userParaApagar.getUid();
+        removeXpListener(); // Remove o listener antes de apagar para evitar callbacks
 
-        // 1. Remover o listener do Firebase para evitar qualquer callback durante a exclusão
-        removeXpListener();
-
-        // 2. Parar a música
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
         }
 
-        // 3. Remover dados do Realtime Database
+        // Primeiro, apaga os dados do usuário do Realtime Database
         DatabaseReference dbUserNodeParaExcluir = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/")
                 .getReference("usuarios")
                 .child(uid);
@@ -529,13 +600,13 @@ public class TelaUsuario extends AppCompatActivity {
         dbUserNodeParaExcluir.removeValue()
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "apagarConta: Dados do usuário removidos do Realtime Database com sucesso.");
-                    // 4. Excluir o usuário da Autenticação
-                    userParaApagar.delete() // Agora userParaApagar é o usuário que estava logado
+                    // Depois de apagar os dados, apaga o usuário da Autenticação
+                    userParaApagar.delete()
                             .addOnSuccessListener(aVoid1 -> {
                                 Log.d(TAG, "apagarConta: Usuário removido da Autenticação com sucesso.");
                                 Toast.makeText(TelaUsuario.this, "Conta excluída com sucesso", Toast.LENGTH_SHORT).show();
-                                // 5. Deslogar explicitamente (embora user.delete() já faça isso) e navegar
-                                auth.signOut(); // Garante o estado de logout
+                                auth.signOut(); // Garante que o usuário está deslogado
+                                // Redireciona para a tela de Login e limpa a pilha de atividades
                                 Intent intent = new Intent(TelaUsuario.this, Login.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
@@ -544,15 +615,13 @@ public class TelaUsuario extends AppCompatActivity {
                             .addOnFailureListener(e -> {
                                 Log.e(TAG, "apagarConta: Erro ao excluir usuário da Autenticação.", e);
                                 Toast.makeText(TelaUsuario.this, "Erro ao excluir da autenticação: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                // Mesmo em falha, tentar deslogar e ir para login pode ser uma boa ideia
-                                fazerLogout();
+                                fazerLogout(); // Se a exclusão falhar, desloga para evitar estado inconsistente
                             });
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "apagarConta: Erro ao excluir dados do Realtime Database.", e);
                     Toast.makeText(TelaUsuario.this, "Erro ao excluir dados do banco: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    // Mesmo em falha, tentar deslogar e ir para login pode ser uma boa ideia
-                    fazerLogout();
+                    fazerLogout(); // Se a exclusão falhar, desloga para evitar estado inconsistente
                 });
     }
 }

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TelaEditarUsuario">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#D9EBDE"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#8B4513"
+            app:title="EDITAR PERFIL"
+            app:titleTextColor="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" android:gravity="center_horizontal" android:layout_marginBottom="24dp"
+            android:paddingTop="24dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"> <Button
+                android:id="@+id/btnPrevAvatar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:text="◀"
+                android:backgroundTint="#8B4513"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:layout_marginEnd="4dp" />
+
+                <ViewFlipper
+                    android:id="@+id/viewFlipperAvatars"
+                    android:layout_width="120dp" android:layout_height="140dp"
+                    android:autoStart="false"
+                    android:flipInterval="1000"
+                    android:inAnimation="@android:anim/fade_in"
+                    android:outAnimation="@android:anim/fade_out" />
+
+                <Button
+                    android:id="@+id/btnNextAvatar"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:text="▶"
+                    android:backgroundTint="#8B4513"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:layout_marginStart="4dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"> <EditText
+                android:id="@+id/txtNomePerfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/aboreto"
+                android:hint="NOME COMPLETO DO USUÁRIO"
+                android:inputType="textCapWords"
+                android:textColor="#101010"
+                android:textSize="20sp" android:textStyle="bold"
+                android:singleLine="true"
+                android:padding="8dp"
+                android:textColorHint="#808080"
+                android:background="#FFFFFF"
+                android:textAlignment="center" /> <EditText
+                android:id="@+id/txtIdadeSexoPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/aboreto"
+                android:hint="IDADE, SEXO (EX: 30 ANOS, FEMININO)"
+                android:inputType="textMultiLine"
+                android:textColor="#000000"
+                android:textSize="14sp" android:lines="2"
+                android:gravity="top|center_horizontal" android:padding="8dp"
+                android:textColorHint="#808080"
+                android:background="#FFFFFF" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="INFORMAÇÕES PESSOAIS"
+                    android:textColor="#009688"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/aboreto"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded_border"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
+                            android:text="PESO:"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/txtPesoPerfil"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
+                            android:hint="65 KG"
+                            android:textAlignment="textEnd"
+                            android:textColor="#F6F6F6"
+                            android:textStyle="bold"
+                            android:padding="2dp"
+                            android:inputType="numberDecimal"
+                            android:textColorHint="#CCCCCC"
+                            android:background="@android:color/transparent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
+                            android:text="ALTURA:"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/txtAlturaPerfil"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
+                            android:hint="170 CM"
+                            android:textAlignment="textEnd"
+                            android:textColor="#F6F6F6"
+                            android:textStyle="bold"
+                            android:padding="2dp"
+                            android:inputType="numberDecimal"
+                            android:textColorHint="#CCCCCC"
+                            android:background="@android:color/transparent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/aboreto"
+                            android:text="TIPO SANGUÍNEO:"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/spinnerTipoSanguineoEditar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="#F1ECEC"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ESTATÍSTICAS"
+                    android:textColor="#009688"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/aboreto"
+                    android:textStyle="bold"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/rounded_border"
+                        android:padding="12dp"
+                        android:layout_marginEnd="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="IMC"
+                            android:textAlignment="center"
+                            android:textColor="#FAFAFA"
+                            android:fontFamily="@font/aboreto"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtIMCPerfil"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="22.5"
+                            android:textAlignment="center"
+                            android:textColor="#009688"
+                            android:textSize="24sp"
+                            android:fontFamily="@font/aboreto"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:background="@drawable/rounded_border"
+                        android:padding="12dp"
+                        android:layout_marginStart="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="NÍVEL"
+                            android:textAlignment="center"
+                            android:textColor="#FDFDFD"
+                            android:fontFamily="@font/aboreto"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="INICIANTE"
+                            android:textAlignment="center"
+                            android:textColor="#009688"
+                            android:textSize="18sp"
+                            android:fontFamily="@font/aboreto"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btnSalvarEdicao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#258A13"
+                    android:text="SALVAR ALTERAÇÕES ✅"
+                    android:textColor="#FFFFFF"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="8dp"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/aboreto"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
