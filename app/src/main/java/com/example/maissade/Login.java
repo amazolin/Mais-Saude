@@ -46,7 +46,7 @@ public class Login extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
-        btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn);
+        // btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn);
 
         auth = FirebaseAuth.getInstance();
         usuariosRef = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/").getReference("usuarios");
