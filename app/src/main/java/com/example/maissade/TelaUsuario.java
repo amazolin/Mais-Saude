@@ -406,10 +406,19 @@ public class TelaUsuario extends AppCompatActivity {
             txtIMCPerfil.setText(String.format("%.2f", imc)); // Formata para 2 casas decimais
 
             String nivelStatus;
-            if (imc < 18.5) nivelStatus = "Abaixo do peso";
-            else if (imc < 24.9) nivelStatus = "Peso normal";
-            else if (imc < 29.9) nivelStatus = "Acima do peso";
-            else nivelStatus = "Obesidade";
+            if (imc < 18.5) {
+                nivelStatus = "Abaixo do peso";
+            } else if (imc < 24.9) {
+                nivelStatus = "Peso normal";
+            } else if (imc < 29.9) {
+                nivelStatus = "Sobrepeso"; // (Acima do peso - Grau I)
+            } else if (imc < 34.9) {
+                nivelStatus = "Obesidade Grau I";
+            } else if (imc < 39.9) {
+                nivelStatus = "Obesidade Grau II (severa)";
+            } else {
+                nivelStatus = "Obesidade Grau III (mórbida)";
+            }
             txtNivelGeralStatus.setText(nivelStatus);
         } else {
             txtIMCPerfil.setText("--"); // Valores padrão se os dados forem inválidos/ausentes

@@ -139,36 +139,17 @@
           app:layout_constraintStart_toEndOf="@+id/btnLogin"
           app:layout_constraintTop_toTopOf="parent" />
 
-      <ImageButton
-          android:id="@+id/btnGoogleSignIn"
-          android:layout_width="69dp"
-          android:layout_height="66dp"
-          android:layout_marginStart="5dp"
-          android:layout_marginTop="56dp"
-          android:layout_marginEnd="40dp"
-          android:backgroundTint="#00FFFFFF"
-          android:scaleType="fitCenter"
-          android:textAlignment="viewStart"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.713"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/btnCadastrar"
-          app:srcCompat="@drawable/google" />
-
       <TextView
           android:id="@+id/textView5"
           android:layout_width="115dp"
           android:layout_height="32dp"
           android:layout_marginStart="40dp"
           android:layout_marginTop="76dp"
-          android:layout_marginEnd="5dp"
           android:text="Logar com"
           android:textAlignment="viewEnd"
           android:textColor="#8A4513"
           android:textSize="16sp"
           android:textStyle="bold"
-          app:layout_constraintEnd_toStartOf="@+id/btnGoogleSignIn"
-          app:layout_constraintHorizontal_bias="1.0"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
