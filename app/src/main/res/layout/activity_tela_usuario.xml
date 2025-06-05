@@ -217,7 +217,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/txtIMCPerfil"
+                            android:id="@+id/txtIMCEditar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="22.5"

@@ -56,7 +56,7 @@
                 android:gravity="center"
                 android:text="0 m"
                 android:textColor="#E3F2FD"
-                android:textSize="32sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <Button
@@ -100,7 +100,7 @@
                 android:gravity="center"
                 android:text="0 m"
                 android:textColor="#E3F2FD"
-                android:textSize="32sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <Button
@@ -144,7 +144,7 @@
                 android:gravity="center"
                 android:text="0 m"
                 android:textColor="#E3F2FD"
-                android:textSize="32sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <Button
@@ -188,7 +188,7 @@
                 android:gravity="center"
                 android:text="0 m"
                 android:textColor="#E3F2FD"
-                android:textSize="32sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <Button

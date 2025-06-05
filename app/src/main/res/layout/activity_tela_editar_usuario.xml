@@ -263,15 +263,16 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/txtEstatisticas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/aboreto"
                     android:text="ESTATÍSTICAS"
                     android:textColor="#009688"
                     android:textSize="18sp"
-                    android:fontFamily="@font/aboreto"
-                    android:textStyle="bold"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="8dp" />
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -298,7 +299,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/txtIMCPerfil"
+                            android:id="@+id/txtIMCEditar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="22.5"
@@ -319,6 +320,7 @@
                         android:layout_marginStart="8dp">
 
                         <TextView
+                            android:id="@+id/txtNivel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="NÍVEL"
@@ -328,13 +330,14 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/txtNivelEditar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/aboreto"
                             android:text="INICIANTE"
                             android:textAlignment="center"
                             android:textColor="#009688"
                             android:textSize="18sp"
-                            android:fontFamily="@font/aboreto"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>

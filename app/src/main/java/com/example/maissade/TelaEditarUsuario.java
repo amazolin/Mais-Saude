@@ -32,32 +32,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Arrays; // Import necessário para Arrays.asList()
 
 public class TelaEditarUsuario extends AppCompatActivity {
     private static final String TAG = "TelaEditarUsuario";
 
     // Mapeamento de strings de avatar para recursos drawable
-    private final int[] avatarIds = {
-            R.drawable.avatarone, R.drawable.avatartwo, R.drawable.avatarthree,
-            R.drawable.avatarfour, R.drawable.avatarfive, R.drawable.avatarsix,
-            R.drawable.avatarseven, R.drawable.avatareight, R.drawable.avatarnine,
-            R.drawable.avatarten, R.drawable.avatareleven, R.drawable.avatartwelve,
-            R.drawable.avatartirteen, R.drawable.avatarfourteen, R.drawable.avatarfiftheen,
-            R.drawable.avatarsixteen, R.drawable.avatarseventeen, R.drawable.avatareighteen,
-            R.drawable.avatarnineteen, R.drawable.avatartwenty, R.drawable.avatartwentyone,
-            R.drawable.avatartwentytwo, R.drawable.avatartwentythree, R.drawable.avatartwentyfour,
-            R.drawable.avatartwentyfive, R.drawable.avatartwentysix, R.drawable.avatartwentyseven,
-            R.drawable.avatartwentyeight, R.drawable.avatartwentynine
-    };
+    private final int[] avatarIds = {R.drawable.avatarone, R.drawable.avatartwo, R.drawable.avatarthree, R.drawable.avatarfour, R.drawable.avatarfive, R.drawable.avatarsix, R.drawable.avatarseven, R.drawable.avatareight, R.drawable.avatarnine, R.drawable.avatarten, R.drawable.avatareleven, R.drawable.avatartwelve, R.drawable.avatartirteen, R.drawable.avatarfourteen, R.drawable.avatarfiftheen, R.drawable.avatarsixteen, R.drawable.avatarseventeen, R.drawable.avatareighteen, R.drawable.avatarnineteen, R.drawable.avatartwenty, R.drawable.avatartwentyone, R.drawable.avatartwentytwo, R.drawable.avatartwentythree, R.drawable.avatartwentyfour, R.drawable.avatartwentyfive, R.drawable.avatartwentysix, R.drawable.avatartwentyseven, R.drawable.avatartwentyeight, R.drawable.avatartwentynine};
 
     private EditText txtNomePerfil, txtIdadePerfil, txtPesoPerfil, txtAlturaPerfil;
     private RadioGroup radioGroupSexo;
     private RadioButton radioMasculino, radioFeminino, radioOutro; // Mantido radioOutro, mas sua visibilidade dependerá do XML
     private Spinner spinnerTipoSanguineoEditar; // Adicionado de volta, pois é um spinner diferente
 
-    private TextView txtIMCPerfil, txtNivelPerfil; // São TextViews, apenas para exibição
+    private TextView txtIMCEditar, txtNivelEditar; // São TextViews, apenas para exibição
     private Button btnSalvarEdicao, btnPrevAvatar, btnNextAvatar;
     private ViewFlipper viewFlipperAvatars;
 
@@ -93,9 +82,7 @@ public class TelaEditarUsuario extends AppCompatActivity {
             return;
         }
 
-        userNodeReference = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/")
-                .getReference("usuarios")
-                .child(currentUser.getUid());
+        userNodeReference = FirebaseDatabase.getInstance("https://mais-saude-21343-default-rtdb.firebaseio.com/").getReference("usuarios").child(currentUser.getUid());
         Log.d(TAG, "onCreate: Referência do Firebase configurada para: " + userNodeReference.toString());
 
         inicializarViews();
@@ -139,8 +126,8 @@ public class TelaEditarUsuario extends AppCompatActivity {
         // Inicialização do Spinner para Tipo Sanguíneo
         spinnerTipoSanguineoEditar = findViewById(R.id.spinnerTipoSanguineoEditar); // Novo: Adicionei esta linha para o Spinner
 
-        txtIMCPerfil = findViewById(R.id.txtIMCPerfil);
-        txtNivelPerfil = findViewById(R.id.txtNivelPerfil);
+        txtIMCEditar = findViewById(R.id.txtIMCEditar);
+        txtNivelEditar = findViewById(R.id.txtNivelEditar);
         btnSalvarEdicao = findViewById(R.id.btnSalvarEdicao);
         btnPrevAvatar = findViewById(R.id.btnPrevAvatar);
         btnNextAvatar = findViewById(R.id.btnNextAvatar);
@@ -152,9 +139,7 @@ public class TelaEditarUsuario extends AppCompatActivity {
         for (int avatarId : avatarIds) {
             ImageView imageView = new ImageView(this);
             imageView.setImageResource(avatarId);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             viewFlipperAvatars.addView(imageView);
         }
@@ -182,8 +167,7 @@ public class TelaEditarUsuario extends AppCompatActivity {
             Log.e(TAG, "configurarSpinnerTipoSanguineo: spinnerTipoSanguineoEditar é NULL. Verifique o layout.");
             return;
         }
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.tipos_sanguineos_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.tipos_sanguineos_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTipoSanguineoEditar.setAdapter(adapter);
 
@@ -201,8 +185,6 @@ public class TelaEditarUsuario extends AppCompatActivity {
         Log.d(TAG, "configurarSpinnerTipoSanguineo: Spinner configurado.");
     }
 
-    // Removido: configurarSpinnerSexo(), pois o sexo agora é RadioGroup.
-
     private void preencherDadosDoIntent() {
         Intent intent = getIntent();
         if (intent != null && intent.getExtras() != null) {
@@ -213,84 +195,59 @@ public class TelaEditarUsuario extends AppCompatActivity {
             Long altura = intent.getLongExtra("altura", 0L);
             String tipoSanguineo = intent.getStringExtra("tipoSanguineo");
             currentImagemPerfilString = intent.getStringExtra("imagemPerfil");
+            double imc = intent.getDoubleExtra("imc", 0.0);
+            String nivelStatus = intent.getStringExtra("nivelStatus");
 
-            Log.d(TAG, "preencherDadosDoIntent: Dados recebidos - Nome: " + nome +
-                    ", Idade: " + idade +
-                    ", Sexo: " + sexo +
-                    ", Imagem: " + currentImagemPerfilString +
-                    ", Tipo Sanguíneo RECEBIDO NA INTENT: '" + tipoSanguineo + "'");
+            Log.d(TAG, "preencherDadosDoIntent: Dados recebidos - Nome: " + nome + ", Idade: " + idade + ", Sexo: " + sexo + ", IMC: " + imc + ", Nível (Status IMC): " + nivelStatus);
 
             if (txtNomePerfil != null && nome != null) {
                 txtNomePerfil.setText(nome);
             }
 
             if (txtIdadePerfil != null) {
-                if (idade != null && idade > 0) {
-                    txtIdadePerfil.setText(String.valueOf(idade));
-                } else {
-                    txtIdadePerfil.setText("");
-                }
+                txtIdadePerfil.setText(idade > 0 ? String.valueOf(idade) : "");
             }
 
-            // Preencher RadioGroup para Sexo
             if (sexo != null && !sexo.isEmpty()) {
                 if (sexo.equalsIgnoreCase("Masculino")) {
                     radioMasculino.setChecked(true);
                 } else if (sexo.equalsIgnoreCase("Feminino")) {
                     radioFeminino.setChecked(true);
-                } else if (sexo.equalsIgnoreCase("Outro")) { // Se você tiver a opção "Outro"
+                } else if (sexo.equalsIgnoreCase("Outro")) {
                     radioOutro.setChecked(true);
                 } else {
-                    radioGroupSexo.clearCheck(); // Limpa a seleção se o valor não corresponder
-                    Log.w(TAG, "preencherDadosDoIntent: Sexo '" + sexo + "' não corresponde a nenhuma opção de RadioButton.");
+                    radioGroupSexo.clearCheck();
+                    Log.w(TAG, "preencherDadosDoIntent: Sexo '" + sexo + "' não corresponde a nenhuma opção.");
                 }
             } else {
-                radioGroupSexo.clearCheck(); // Nenhuma opção selecionada se sexo for nulo/vazio
+                radioGroupSexo.clearCheck();
             }
 
-
-            if (txtPesoPerfil != null && peso != null && peso > 0) {
+            if (txtPesoPerfil != null && peso > 0) {
                 txtPesoPerfil.setText(String.valueOf(peso));
             }
-            if (txtAlturaPerfil != null && altura != null && altura > 0) {
+
+            if (txtAlturaPerfil != null && altura > 0) {
                 txtAlturaPerfil.setText(String.valueOf(altura));
             }
 
-            // Define a seleção inicial do Spinner de Tipo Sanguíneo
             if (spinnerTipoSanguineoEditar != null) {
                 ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) spinnerTipoSanguineoEditar.getAdapter();
                 if (adapter != null) {
                     if (tipoSanguineo == null) {
-                        Log.w(TAG, "preencherDadosDoIntent: Tipo sanguíneo recebido é NULL. Definindo seleção para 0.");
                         spinnerTipoSanguineoEditar.setSelection(0);
                     } else {
                         int spinnerPosition = adapter.getPosition(tipoSanguineo);
-                        Log.d(TAG, "preencherDadosDoIntent: Tentando encontrar '" + tipoSanguineo + "' no spinner. Posição encontrada: " + spinnerPosition);
-
                         if (spinnerPosition >= 0) {
                             spinnerTipoSanguineoEditar.setSelection(spinnerPosition);
-                            Log.d(TAG, "preencherDadosDoIntent: Tipo sanguíneo '" + tipoSanguineo + "' selecionado no Spinner.");
                         } else {
-                            Log.w(TAG, "preencherDadosDoIntent: Tipo sanguíneo '" + tipoSanguineo + "' NÃO ENCONTRADO NO SPINNER.");
-                            Log.w(TAG, "preencherDadosDoIntent: Opções do Spinner: " + Arrays.toString(getResources().getStringArray(R.array.tipos_sanguineos_array)));
-                            int naoInformadoPos = adapter.getPosition("Não Informado");
-                            if (naoInformadoPos >= 0) {
-                                spinnerTipoSanguineoEditar.setSelection(naoInformadoPos);
-                                Log.d(TAG, "preencherDadosDoIntent: 'Não Informado' selecionado como fallback.");
-                            } else {
-                                spinnerTipoSanguineoEditar.setSelection(0);
-                                Log.d(TAG, "preencherDadosDoIntent: Primeira opção selecionada como fallback.");
-                            }
+                            int fallback = adapter.getPosition("Não Informado");
+                            spinnerTipoSanguineoEditar.setSelection(fallback >= 0 ? fallback : 0);
                         }
                     }
-                } else {
-                    Log.e(TAG, "preencherDadosDoIntent: Adapter do Spinner é NULL.");
                 }
-            } else {
-                Log.e(TAG, "preencherDadosDoIntent: spinnerTipoSanguineoEditar é NULL. Verifique o layout.");
             }
 
-            // Define o avatar inicial no ViewFlipper
             if (currentImagemPerfilString != null && currentImagemPerfilString.startsWith("avatar_")) {
                 try {
                     int index = Integer.parseInt(currentImagemPerfilString.substring(7));
@@ -298,27 +255,32 @@ public class TelaEditarUsuario extends AppCompatActivity {
                         currentAvatarIndex = index;
                         viewFlipperAvatars.setDisplayedChild(currentAvatarIndex);
                     } else {
-                        Log.w(TAG, "preencherDadosDoIntent: Índice de avatar fora do intervalo. Usando avatar padrão (0).");
                         currentAvatarIndex = 0;
                         viewFlipperAvatars.setDisplayedChild(currentAvatarIndex);
                     }
                 } catch (NumberFormatException e) {
-                    Log.e(TAG, "preencherDadosDoIntent: Erro ao analisar índice de imagemSelecionada: " + currentImagemPerfilString, e);
                     currentAvatarIndex = 0;
                     viewFlipperAvatars.setDisplayedChild(currentAvatarIndex);
                 }
             } else {
-                Log.w(TAG, "preencherDadosDoIntent: imagemPerfil nula ou inválida. Usando avatar padrão (0).");
                 currentAvatarIndex = 0;
                 viewFlipperAvatars.setDisplayedChild(currentAvatarIndex);
             }
 
-            // O IMC e o Nível Geral são apenas exibidos e não editados nesta tela
+            //  Aqui exibimos o IMC e o Nível do usuário
+            if (txtIMCEditar != null) {
+                txtIMCEditar.setText(String.format(Locale.getDefault(), "%.2f", imc));
+            }
+            if (txtNivelEditar != null) { // txtNivelEditar pode estar exibindo o status de peso, mas aqui é o Nível de XP
+                txtNivelEditar.setText(nivelStatus);
+            }
+
         } else {
-            Log.w(TAG, "preencherDadosDoIntent: Intent ou Extras nulos, dados não foram passados.");
+            Log.w(TAG, "preencherDadosDoIntent: Intent ou Extras nulos.");
             Toast.makeText(this, "Não foi possível carregar os dados para edição.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void configurarListenerBotaoSalvar() {
         if (btnSalvarEdicao != null) {
@@ -331,14 +293,14 @@ public class TelaEditarUsuario extends AppCompatActivity {
     }
 
     private void salvarAlteracoesNoFirebase() {
-        // 1. Obter os dados atualizados dos EditTexts e RadioGroup/Spinner
+        // 1. Obter os dados atualizados dos campos de entrada
         String nomeAtualizado = txtNomePerfil.getText().toString().trim();
         String idadeStr = txtIdadePerfil.getText().toString().trim();
         String pesoStr = txtPesoPerfil.getText().toString().trim();
         String alturaStr = txtAlturaPerfil.getText().toString().trim();
         String tipoSanguineoAtualizado = spinnerTipoSanguineoEditar.getSelectedItem().toString();
 
-        // Obter o sexo selecionado do RadioGroup
+        // 2. Obter o sexo selecionado do RadioGroup
         String sexoAtualizado = "";
         int selectedId = radioGroupSexo.getCheckedRadioButtonId();
         if (selectedId != -1) {
@@ -346,20 +308,41 @@ public class TelaEditarUsuario extends AppCompatActivity {
             sexoAtualizado = selectedRadioButton.getText().toString();
         }
 
-        // 2. Validação básica
+        // 3. Validação dos campos obrigatórios
         if (nomeAtualizado.isEmpty()) {
             txtNomePerfil.setError("Nome é obrigatório.");
             txtNomePerfil.requestFocus();
             return;
         }
 
-        // Validação da idade
         if (idadeStr.isEmpty()) {
             txtIdadePerfil.setError("Idade é obrigatória.");
             txtIdadePerfil.requestFocus();
             return;
         }
-        Long idadeAtualizada;
+
+        if (sexoAtualizado.isEmpty()) {
+            Toast.makeText(this, "Por favor, selecione o sexo.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (pesoStr.isEmpty()) {
+            txtPesoPerfil.setError("Peso é obrigatório.");
+            txtPesoPerfil.requestFocus();
+            return;
+        }
+
+        if (alturaStr.isEmpty()) {
+            txtAlturaPerfil.setError("Altura é obrigatória.");
+            txtAlturaPerfil.requestFocus();
+            return;
+        }
+
+        // 4. Conversões de strings para números com validações
+        long idadeAtualizada;
+        double pesoAtualizado;
+        double alturaAtualizada;
+
         try {
             idadeAtualizada = Long.parseLong(idadeStr);
             if (idadeAtualizada < 0 || idadeAtualizada > 120) {
@@ -373,43 +356,65 @@ public class TelaEditarUsuario extends AppCompatActivity {
             return;
         }
 
-        // Validação do sexo (verificar se algum RadioButton foi selecionado)
-        if (sexoAtualizado.isEmpty()) {
-            Toast.makeText(this, "Por favor, selecione o sexo.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (pesoStr.isEmpty()) {
-            txtPesoPerfil.setError("Peso é obrigatório.");
+        try {
+            pesoAtualizado = Double.parseDouble(pesoStr);
+        } catch (NumberFormatException e) {
+            txtPesoPerfil.setError("Peso inválido. Digite um número.");
             txtPesoPerfil.requestFocus();
             return;
         }
-        if (alturaStr.isEmpty()) {
-            txtAlturaPerfil.setError("Altura é obrigatória.");
+
+        try {
+            alturaAtualizada = Double.parseDouble(alturaStr);
+            if (alturaAtualizada <= 0) {
+                txtAlturaPerfil.setError("Altura deve ser maior que zero.");
+                txtAlturaPerfil.requestFocus();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            txtAlturaPerfil.setError("Altura inválida. Digite um número.");
             txtAlturaPerfil.requestFocus();
             return;
         }
 
-        // Converter para os tipos corretos (peso e altura)
-        Long pesoAtualizado = Long.parseLong(pesoStr);
-        Long alturaAtualizada = Long.parseLong(alturaStr);
+        // 5. Calcular IMC
+        double alturaMetros = alturaAtualizada / 100.0;
+        double imc = pesoAtualizado / (alturaMetros * alturaMetros);
 
-        // 3. Criar um HashMap para as atualizações
+        // 6. Determinar o nível do usuário com base no IMC
+        String nivelUsuario;
+        if (imc < 18.5) {
+            nivelUsuario = "Abaixo do peso";
+        } else if (imc < 25) {
+            nivelUsuario = "Peso normal";
+        } else if (imc < 30) {
+            nivelUsuario = "Sobrepeso";
+        } else if (imc < 35) {
+            nivelUsuario = "Obesidade Grau I";
+        } else if (imc < 40) {
+            nivelUsuario = "Obesidade Grau II";
+        } else {
+            nivelUsuario = "Obesidade Grau III";
+        }
+
+        // 7. Criar um HashMap com os dados atualizados
         Map<String, Object> updates = new HashMap<>();
         updates.put("nome", nomeAtualizado);
         updates.put("idade", idadeAtualizada);
-        updates.put("sexo", sexoAtualizado); // Salva o sexo do RadioButton
+        updates.put("sexo", sexoAtualizado);
         updates.put("peso", pesoAtualizado);
         updates.put("altura", alturaAtualizada);
         updates.put("tipoSanguineo", tipoSanguineoAtualizado);
-        updates.put("imagemPerfil", currentImagemPerfilString);
+        updates.put("imagemPerfil", currentImagemPerfilString); // certifique-se que está sendo atualizado corretamente ao trocar avatar
+        updates.put("imc", imc);
+        updates.put("nivel", nivelUsuario);
 
-        // 4. Enviar as atualizações para o Firebase Realtime Database
+        // 8. Enviar os dados atualizados para o Firebase
         userNodeReference.updateChildren(updates)
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "salvarAlteracoesNoFirebase: Dados do usuário atualizados com sucesso!");
                     Toast.makeText(TelaEditarUsuario.this, "Perfil atualizado com sucesso!", Toast.LENGTH_SHORT).show();
-                    finish(); // Fecha a TelaEditarUsuario e volta para a TelaUsuario
+                    finish(); // Fecha a tela de edição e volta para a anterior
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "salvarAlteracoesNoFirebase: Erro ao atualizar dados do usuário.", e);
